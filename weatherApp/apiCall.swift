@@ -14,7 +14,6 @@ func fetchData(completionHandler:  @escaping (weatherInfoData) -> Void) {
     let dataTask = URLSession.shared.dataTask(with: url!) { (data, response, error) in
         guard let data = data, error == nil else {
             print("error!!!!")
-            
             return
         }
         var fetchedWeatherData: weatherInfoData?
@@ -25,7 +24,6 @@ func fetchData(completionHandler:  @escaping (weatherInfoData) -> Void) {
         catch{
             print("Error : \(error.localizedDescription)")
         }
-        
     }
     
     dataTask.resume()

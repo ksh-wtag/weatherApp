@@ -11,12 +11,9 @@ import UIKit
 
 class ViewController: UIViewController, UITableViewDelegate,UITableViewDataSource {
 
-//    var weatherDataTitle = ["Pressure", "Humidity", "Visibility", "Wind"]
     var response = [String]()
-
-
-    @IBOutlet weak var temperatureLabel: UILabel!
     
+    @IBOutlet weak var temperatureLabel: UILabel!
     @IBOutlet weak var minTemp: UILabel!
     @IBOutlet weak var maxTemp: UILabel!
     @IBOutlet weak var desLabel: UILabel!
@@ -41,8 +38,6 @@ class ViewController: UIViewController, UITableViewDelegate,UITableViewDataSourc
                 
             }
         }
-        
-
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -79,14 +74,6 @@ class ViewController: UIViewController, UITableViewDelegate,UITableViewDataSourc
             cell.weatherInfoTitle.text = "Wind Speed"
            
         }
-        
-        
-            
-            
-//        cell.weatherInfoLabel.text = fetchNewData.main
-//        cell.weatherInfoLabel.text = fetchNewData.main
-//        cell.weatherInfoLabel.text = fetchNewData.main
-//        cell.weatherValueLabel.text = weatherDataValue[indexPath.row]
         return cell
     }
     
