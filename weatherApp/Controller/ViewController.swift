@@ -1,17 +1,6 @@
-//
-//  ViewController.swift
-//  weatherApp
-//
-//  Created by Kazi Shakawat Hossain Ratul on 6/5/24.
-//
-
 import UIKit
 
-
-
-class ViewController: UIViewController, UITableViewDelegate,UITableViewDataSource {
-
-    var response = [String]()
+class ViewController: UIViewController {
     
     @IBOutlet weak var temperatureLabel: UILabel!
     @IBOutlet weak var minTemp: UILabel!
@@ -20,13 +9,15 @@ class ViewController: UIViewController, UITableViewDelegate,UITableViewDataSourc
     @IBOutlet weak var feelsLikeLabel: UILabel!
     @IBOutlet weak var weatherInfoTable: UITableView!
     
-    var fetchNewData: weatherInfoData?
+    var response = [String]()
+    var fetchNewData: WeatherInfoData?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         let nib = UINib(nibName: "WeatherInfoCell", bundle: nil)
         weatherInfoTable.register(nib, forCellReuseIdentifier: "weatherInfoCell")
-        fetchData { response in
+        let callingNetwork  = NetworkCall()
+        callingNetwork.fetchData { response in
             self.fetchNewData = response
             DispatchQueue.main.async  {
                 self.temperatureLabel.text = "\(Int(self.fetchNewData!.main.temp))ºC"
@@ -39,7 +30,9 @@ class ViewController: UIViewController, UITableViewDelegate,UITableViewDataSourc
             }
         }
     }
-    
+}
+
+extension ViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         weatherInfoTable.deselectRow(at: indexPath, animated: true)
     }
@@ -47,38 +40,45 @@ class ViewController: UIViewController, UITableViewDelegate,UITableViewDataSourc
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 4
     }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = weatherInfoTable.dequeueReusableCell(withIdentifier: "weatherInfoCell", for: indexPath) as! WeatherInfoCell
         
-        if indexPath.row == 0 {
-            var anything = fetchNewData?.main.pressure ?? 0
-            cell.weatherInfoValue.text = "\(anything)"
-            cell.weatherInfoTitle.text = "Pressure"
-           
+        enum networkData: Int {
+            case pressure = 0
+            case Humidity
+            case Visibility
+            case WindSpeed
         }
-          if indexPath.row == 1 {
-            var anything = fetchNewData?.main.humidity ?? 0
-            cell.weatherInfoValue.text = "\(anything)"
-            cell.weatherInfoTitle.text = "Humidity"
-           
+        
+        var weatherTitle = ""
+        var weatherValue = ""
+        
+        switch indexPath.row {
+        case networkData.pressure.rawValue:
+            weatherValue = "\(fetchNewData?.main.pressure ?? 0)"
+            weatherTitle = "Pressure"
+            
+        case networkData.Humidity.rawValue:
+            weatherValue = "\(fetchNewData?.main.humidity ?? 0)"
+            weatherTitle = "Humidity"
+            
+        case networkData.Visibility.rawValue:
+            weatherValue = "\(fetchNewData?.visibility ?? 0)"
+            weatherTitle = "Visibility"
+            
+        case networkData.WindSpeed.rawValue:
+            weatherValue = "\(fetchNewData?.wind.speed ?? 0) km/h"
+            weatherTitle = "Wind Speed"
+        default:
+            weatherValue = ""
+            weatherTitle = ""
         }
-          if indexPath.row == 2 {
-            var anything = fetchNewData?.visibility ?? 0
-            cell.weatherInfoValue.text = "\(anything)"
-            cell.weatherInfoTitle.text = "Visibility"
-           
-        }
-          if indexPath.row == 3 {
-            var anything = Int(fetchNewData?.wind.speed ?? 0)
-            cell.weatherInfoValue.text = "\(anything) km/h"
-            cell.weatherInfoTitle.text = "Wind Speed"
-           
-        }
+        
+        cell.weatherInfoTitle.text = weatherTitle
+        cell.weatherInfoValue.text = weatherValue
+        
         return cell
     }
-    
-    
-    
-        
 }
 
