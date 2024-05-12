@@ -14,7 +14,7 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        let nib = UINib(nibName: "WeatherInfoCell", bundle: nil)
+        let nib = UINib(nibName: "WeatherInfoCell", bundle: .main)
         weatherInfoTable.register(nib, forCellReuseIdentifier: "weatherInfoCell")
         
         let callingNetwork  = NetworkManager()

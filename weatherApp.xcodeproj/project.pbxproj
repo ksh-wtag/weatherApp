@@ -104,7 +104,7 @@
 				E73FBDC72BEB3D910035CB6F /* View */,
 				E73FBDC82BEB3DA80035CB6F /* Resources */,
 				E7900F202BECE3F8003FD19A /* Model */,
-				E7900F212BECE411003FD19A /* Network call */,
+				E7900F212BECE411003FD19A /* Services */,
 				E7900F222BECE424003FD19A /* Cell */,
 			);
 			path = weatherApp;
@@ -118,12 +118,12 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
-		E7900F212BECE411003FD19A /* Network call */ = {
+		E7900F212BECE411003FD19A /* Services */ = {
 			isa = PBXGroup;
 			children = (
 				E752E5D02BEA566200958B34 /* NetworkManager.swift */,
 			);
-			path = "Network call";
+			path = Services;
 			sourceTree = "<group>";
 		};
 		E7900F222BECE424003FD19A /* Cell */ = {
