@@ -16,7 +16,8 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         let nib = UINib(nibName: "WeatherInfoCell", bundle: nil)
         weatherInfoTable.register(nib, forCellReuseIdentifier: "weatherInfoCell")
-        let callingNetwork  = NetworkCall()
+        
+        let callingNetwork  = NetworkManager()
         callingNetwork.fetchData { response in
             self.fetchNewData = response
             DispatchQueue.main.async  {
@@ -26,7 +27,6 @@ class ViewController: UIViewController {
                 self.minTemp.text = "Minimum temperaure \(Int(self.fetchNewData!.main.temp_min))ºC"
                 self.maxTemp.text = "Maximum temperaure \(Int(self.fetchNewData!.main.temp_max))ºC"
                 self.weatherInfoTable.reloadData()
-                
             }
         }
     }
@@ -58,15 +58,12 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
         case networkData.pressure.rawValue:
             weatherValue = "\(fetchNewData?.main.pressure ?? 0)"
             weatherTitle = "Pressure"
-            
         case networkData.Humidity.rawValue:
             weatherValue = "\(fetchNewData?.main.humidity ?? 0)"
             weatherTitle = "Humidity"
-            
         case networkData.Visibility.rawValue:
             weatherValue = "\(fetchNewData?.visibility ?? 0)"
             weatherTitle = "Visibility"
-            
         case networkData.WindSpeed.rawValue:
             weatherValue = "\(fetchNewData?.wind.speed ?? 0) km/h"
             weatherTitle = "Wind Speed"
