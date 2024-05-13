@@ -5,13 +5,11 @@ struct WeatherInfoData: Codable {
     let main: Main
     let visibility: Int
     let wind: Wind
-    
 }
 
 struct Main: Codable {
     let temp, feels_like, temp_min, temp_max: Double
     let pressure, humidity: Int
-    
 }
 
 struct Weather: Codable {
@@ -20,5 +18,4 @@ struct Weather: Codable {
 
 struct Wind: Codable {
     let speed: Double
-    
 }

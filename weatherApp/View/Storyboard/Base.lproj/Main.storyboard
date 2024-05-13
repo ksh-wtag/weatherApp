@@ -7,10 +7,10 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
+        <!--Weather Info View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="weatherApp" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="WeatherInfoViewController" customModule="weatherApp" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -105,7 +105,7 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="desLabel" destination="K1V-TG-nfh" id="46d-ou-QoS"/>
+                        <outlet property="descriptionLabel" destination="K1V-TG-nfh" id="dd0-K3-bpG"/>
                         <outlet property="feelsLikeLabel" destination="PKp-SC-iwu" id="z3X-eL-iud"/>
                         <outlet property="maxTemp" destination="6tI-Nl-i3g" id="5eJ-5y-xV5"/>
                         <outlet property="minTemp" destination="88m-wZ-5ne" id="IZ7-ga-jeb"/>

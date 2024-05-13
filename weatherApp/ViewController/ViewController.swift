@@ -1,38 +1,40 @@
 import UIKit
 
-class ViewController: UIViewController {
+class WeatherInfoViewController: UIViewController {
     
     @IBOutlet weak var temperatureLabel: UILabel!
     @IBOutlet weak var minTemp: UILabel!
     @IBOutlet weak var maxTemp: UILabel!
-    @IBOutlet weak var desLabel: UILabel!
+    @IBOutlet weak var descriptionLabel: UILabel!
     @IBOutlet weak var feelsLikeLabel: UILabel!
     @IBOutlet weak var weatherInfoTable: UITableView!
     
-    var response = [String]()
-    var fetchNewData: WeatherInfoData?
+    var weatherInfoData: WeatherInfoData?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         let nib = UINib(nibName: "WeatherInfoCell", bundle: nil)
         weatherInfoTable.register(nib, forCellReuseIdentifier: "weatherInfoCell")
-        
-        let callingNetwork  = NetworkManager()
-        callingNetwork.fetchData { response in
-            self.fetchNewData = response
+        fetchWeatherData()
+    }
+    
+    func fetchWeatherData() {
+        let networkManager  = NetworkManager()
+        networkManager.showWeatherData { response in
+            self.weatherInfoData = response
             DispatchQueue.main.async  {
-                self.temperatureLabel.text = "\(Int(self.fetchNewData!.main.temp))ºC"
-                self.desLabel.text = "\(self.fetchNewData!.weather[0].description)"
-                self.feelsLikeLabel.text = "Feels like \(Int(self.fetchNewData!.main.feels_like))ºC"
-                self.minTemp.text = "Minimum temperaure \(Int(self.fetchNewData!.main.temp_min))ºC"
-                self.maxTemp.text = "Maximum temperaure \(Int(self.fetchNewData!.main.temp_max))ºC"
+                self.temperatureLabel.text = "\(Int(response.main.temp))ºC"
+                self.descriptionLabel.text = "\(response.weather[0].description)"
+                self.feelsLikeLabel.text = "Feels like \(Int(response.main.feels_like))ºC"
+                self.minTemp.text = "Minimum temperaure \(Int(response.main.temp_min))ºC"
+                self.maxTemp.text = "Maximum temperaure \(Int(response.main.temp_max))ºC"
                 self.weatherInfoTable.reloadData()
             }
         }
     }
 }
 
-extension ViewController: UITableViewDelegate, UITableViewDataSource {
+extension WeatherInfoViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         weatherInfoTable.deselectRow(at: indexPath, animated: true)
     }
@@ -56,16 +58,16 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
         
         switch indexPath.row {
         case networkData.pressure.rawValue:
-            weatherValue = "\(fetchNewData?.main.pressure ?? 0)"
+            weatherValue = "\(weatherInfoData?.main.pressure ?? 0) Pa"
             weatherTitle = "Pressure"
         case networkData.Humidity.rawValue:
-            weatherValue = "\(fetchNewData?.main.humidity ?? 0)"
+            weatherValue = "\(weatherInfoData?.main.humidity ?? 0) %"
             weatherTitle = "Humidity"
         case networkData.Visibility.rawValue:
-            weatherValue = "\(fetchNewData?.visibility ?? 0)"
+            weatherValue = "\(weatherInfoData?.visibility ?? 0) km"
             weatherTitle = "Visibility"
         case networkData.WindSpeed.rawValue:
-            weatherValue = "\(fetchNewData?.wind.speed ?? 0) km/h"
+            weatherValue = "\(weatherInfoData?.wind.speed ?? 0) km/h"
             weatherTitle = "Wind Speed"
         default:
             weatherValue = ""
