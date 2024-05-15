@@ -1,5 +1,12 @@
 import UIKit
 
+enum NetworkData: Int {
+    case pressure = 0
+    case humidity
+    case visibility
+    case windSpeed
+}
+
 class WeatherInfoViewController: UIViewController {
     
     @IBOutlet weak var temperatureLabel: UILabel!
@@ -20,7 +27,7 @@ class WeatherInfoViewController: UIViewController {
     
     func fetchWeatherData() {
         let networkManager  = NetworkManager()
-        networkManager.showWeatherData { response in
+        networkManager.fetchFromApi { response in
             self.weatherInfoData = response
             DispatchQueue.main.async  {
                 self.temperatureLabel.text = "\(Int(response.main.temp))ºC"
@@ -46,27 +53,22 @@ extension WeatherInfoViewController: UITableViewDelegate, UITableViewDataSource 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = weatherInfoTable.dequeueReusableCell(withIdentifier: "weatherInfoCell", for: indexPath) as! WeatherInfoCell
         
-        enum networkData: Int {
-            case pressure = 0
-            case Humidity
-            case Visibility
-            case WindSpeed
-        }
-        
         var weatherTitle = ""
         var weatherValue = ""
         
-        switch indexPath.row {
-        case networkData.pressure.rawValue:
+        let networkData = NetworkData(rawValue: indexPath.row)
+        
+        switch networkData {
+        case .pressure:
             weatherValue = "\(weatherInfoData?.main.pressure ?? 0) Pa"
             weatherTitle = "Pressure"
-        case networkData.Humidity.rawValue:
+        case .humidity:
             weatherValue = "\(weatherInfoData?.main.humidity ?? 0) %"
             weatherTitle = "Humidity"
-        case networkData.Visibility.rawValue:
+        case .visibility:
             weatherValue = "\(weatherInfoData?.visibility ?? 0) km"
             weatherTitle = "Visibility"
-        case networkData.WindSpeed.rawValue:
+        case .windSpeed:
             weatherValue = "\(weatherInfoData?.wind.speed ?? 0) km/h"
             weatherTitle = "Wind Speed"
         default:
