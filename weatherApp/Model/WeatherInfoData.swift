@@ -6,4 +6,3 @@ struct WeatherInfoData: Codable {
     let visibility: Int
     let wind: Wind
 }
-//test branch
