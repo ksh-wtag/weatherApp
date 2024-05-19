@@ -93,7 +93,6 @@ extension WeatherInfoViewController: UITableViewDelegate, UITableViewDataSource 
 extension WeatherInfoViewController: PassCityInfo {
     func passCoordinate(latitude: Double, longitude: Double) {
         fetchWeatherData(latitude: latitude, longitude: longitude)
-        print(latitude)
     }
 }
 
