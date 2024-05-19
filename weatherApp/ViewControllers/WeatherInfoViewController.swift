@@ -9,6 +9,7 @@ enum NetworkData: Int {
 
 class WeatherInfoViewController: UIViewController {
     
+    @IBOutlet weak var cityName: UILabel!
     @IBOutlet weak var temperatureLabel: UILabel!
     @IBOutlet weak var minTemp: UILabel!
     @IBOutlet weak var maxTemp: UILabel!
@@ -22,14 +23,15 @@ class WeatherInfoViewController: UIViewController {
         super.viewDidLoad()
         let nib = UINib(nibName: "WeatherInfoCell", bundle: nil)
         weatherInfoTable.register(nib, forCellReuseIdentifier: "weatherInfoCell")
-        fetchWeatherData()
+        fetchWeatherData(latitude: 23.7104, longitude: 90.4074)
     }
     
-    func fetchWeatherData() {
+    func fetchWeatherData(latitude: Double, longitude: Double) {
         let networkManager  = NetworkManager()
-        networkManager.fetchFromApi { response in
+        networkManager.fetchWeatherData(latitude: latitude, longitude: longitude, completionHandler: { response in
             self.weatherInfoData = response
             DispatchQueue.main.async  {
+                self.cityName.text = "\(response.name)"
                 self.temperatureLabel.text = "\(Int(response.main.temp))ºC"
                 self.descriptionLabel.text = "\(response.weather[0].description)"
                 self.feelsLikeLabel.text = "Feels like \(Int(response.main.feels_like))ºC"
@@ -37,7 +39,12 @@ class WeatherInfoViewController: UIViewController {
                 self.maxTemp.text = "Maximum temperaure \(Int(response.main.temp_max))ºC"
                 self.weatherInfoTable.reloadData()
             }
-        }
+        })
+    }
+    @IBAction func moveToLocationVC(_ sender: UIButton) {
+        let locationVC = storyboard?.instantiateViewController(withIdentifier: "LocationsViewController") as! LocationsViewController
+        locationVC.delegate = self
+        navigationController?.pushViewController(locationVC, animated: true)
     }
 }
 
@@ -80,6 +87,12 @@ extension WeatherInfoViewController: UITableViewDelegate, UITableViewDataSource 
         cell.weatherInfoValue.text = weatherValue
         
         return cell
+    }
+}
+
+extension WeatherInfoViewController: PassCityInfo {
+    func passCoordinate(latitude: Double, longitude: Double) {
+        fetchWeatherData(latitude: latitude, longitude: longitude)
     }
 }
 
