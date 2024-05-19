@@ -1,6 +1,6 @@
 import Foundation
 
-class NetworkManager: LocationsViewController {
+class NetworkManager {
     func fetchWeatherData(latitude: Double, longitude: Double, completionHandler:  @escaping (WeatherInfoData) -> Void) {
         DispatchQueue.global(qos: .userInitiated).async {
             let url = URL(string: "https://api.openweathermap.org/data/2.5/weather?lat=\(latitude)&lon=\(longitude)&units=metric&appid=f7fba2a96004431c6e3b90fb0728bd89")
