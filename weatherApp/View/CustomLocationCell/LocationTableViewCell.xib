@@ -16,18 +16,14 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="City" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1Fe-Yr-0o1">
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="City" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1Fe-Yr-0o1">
                         <rect key="frame" x="26" y="11.666666666666664" width="268" height="21"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                 </subviews>
-                <constraints>
-                    <constraint firstItem="1Fe-Yr-0o1" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="3V9-Pi-zjk"/>
-                    <constraint firstAttribute="trailing" secondItem="1Fe-Yr-0o1" secondAttribute="trailing" constant="26" id="eDc-Wy-13t"/>
-                    <constraint firstItem="1Fe-Yr-0o1" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="26" id="thM-Ta-IYg"/>
-                </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
