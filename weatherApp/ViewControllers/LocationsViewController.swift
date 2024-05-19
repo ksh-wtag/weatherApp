@@ -50,8 +50,8 @@ extension LocationsViewController: UITableViewDelegate, UITableViewDataSource, U
         locationTableView.reloadData()
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let nameOfCity = locationList[indexPath.row].name
-        for city in locationList {
+        let nameOfCity = searchData[indexPath.row].name
+        for city in searchData {
             if nameOfCity == city.name {
                 delegate!.passCoordinate(latitude: city.latitude , longitude: city.longitude)
             }
