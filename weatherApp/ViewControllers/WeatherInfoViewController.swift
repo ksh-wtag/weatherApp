@@ -21,6 +21,10 @@ class WeatherInfoViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        registerCellAndSetDefaultData()
+    }
+    
+    func registerCellAndSetDefaultData() {
         let nib = UINib(nibName: "WeatherInfoCell", bundle: nil)
         weatherInfoTable.register(nib, forCellReuseIdentifier: "weatherInfoCell")
         fetchWeatherData(latitude: 23.7104, longitude: 90.4074)
@@ -31,16 +35,23 @@ class WeatherInfoViewController: UIViewController {
         networkManager.fetchWeatherData(latitude: latitude, longitude: longitude, completionHandler: { response in
             self.weatherInfoData = response
             DispatchQueue.main.async  {
-                self.cityName.text = "\(response.name)"
-                self.temperatureLabel.text = "\(Int(response.main.temp))ºC"
-                self.descriptionLabel.text = "\(response.weather[0].description)"
-                self.feelsLikeLabel.text = "Feels like \(Int(response.main.feels_like))ºC"
-                self.minTemp.text = "Minimum temperaure \(Int(response.main.temp_min))ºC"
-                self.maxTemp.text = "Maximum temperaure \(Int(response.main.temp_max))ºC"
-                self.weatherInfoTable.reloadData()
+                self.updateWeatherDataInView()
             }
         })
     }
+    
+    func updateWeatherDataInView() {
+        if let weatherInfoData = weatherInfoData {
+            cityName.text = "\(weatherInfoData.name)"
+            self.temperatureLabel.text = "\(Int(weatherInfoData.main.temp))ºC"
+            self.descriptionLabel.text = "\(weatherInfoData.weather[0].description)"
+            self.feelsLikeLabel.text = "Feels like \(Int(weatherInfoData.main.feels_like))ºC"
+            self.minTemp.text = "Minimum temperaure \(Int(weatherInfoData.main.temp_min))ºC"
+            self.maxTemp.text = "Maximum temperaure \(Int(weatherInfoData.main.temp_max))ºC"
+            self.weatherInfoTable.reloadData()
+        }
+    }
+    
     @IBAction func moveToLocationVC(_ sender: UIButton) {
         let locationVC = storyboard?.instantiateViewController(withIdentifier: "LocationsViewController") as! LocationsViewController
         locationVC.delegate = self
