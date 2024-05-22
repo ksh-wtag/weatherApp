@@ -22,26 +22,15 @@ class WeatherInfoViewController: UIViewController {
     var currentLocationLongitude = Double()
     
     var weatherInfoData: WeatherInfoData?
-    var locationManager: CLLocationManager!
+    var locationManager: CLLocationManager?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         locationManager = CLLocationManager()
-        self.locationManager.delegate = self
-        
-        if CLLocationManager.locationServicesEnabled() {
-            
-            
-            if locationManager.authorizationStatus == .authorizedWhenInUse || locationManager.authorizationStatus == .authorizedAlways {
-              
-//                self.locationManager.startUpdatingLocation()
-                
-            } else {
-                locationManager.requestAlwaysAuthorization()
-            }
-        }
-        
+        locationManager?.delegate = self
+        locationManager?.requestWhenInUseAuthorization()
+        locationManager?.startUpdatingLocation()
         
         registerCustomWeatherCell()
     }
@@ -103,10 +92,10 @@ extension WeatherInfoViewController: CLLocationManagerDelegate {
             print("Restricted")
         case .denied:
             print("Denied")
-        case .authorizedWhenInUse,
-                .authorizedAlways:
+        case .authorizedWhenInUse:
             print("Authorized")
-            manager.startUpdatingLocation()
+        default:
+            print("Default")
         }
     }
     
@@ -118,7 +107,8 @@ extension WeatherInfoViewController: CLLocationManagerDelegate {
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: any Error) {
-        if manager.authorizationStatus != .notDetermined {
+        locationManager?.stopUpdatingLocation()
+        if locationManager?.authorizationStatus != .authorizedWhenInUse {
             let errorAlert = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
             errorAlert.addAction(UIAlertAction(title: "OK", style: .default))
             self.present(errorAlert, animated: true)
