@@ -1,4 +1,5 @@
 import UIKit
+import CoreLocation
 
 enum NetworkData: Int {
     case pressure = 0
@@ -17,17 +18,37 @@ class WeatherInfoViewController: UIViewController {
     @IBOutlet weak var feelsLikeLabel: UILabel!
     @IBOutlet weak var weatherInfoTable: UITableView!
     
+    var currentLocationLatitude = Double()
+    var currentLocationLongitude = Double()
+    
     var weatherInfoData: WeatherInfoData?
+    var locationManager: CLLocationManager!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        registerCellAndSetDefaultData()
+        
+        locationManager = CLLocationManager()
+        self.locationManager.delegate = self
+        
+        if CLLocationManager.locationServicesEnabled() {
+            
+            
+            if locationManager.authorizationStatus == .authorizedWhenInUse || locationManager.authorizationStatus == .authorizedAlways {
+              
+//                self.locationManager.startUpdatingLocation()
+                
+            } else {
+                locationManager.requestAlwaysAuthorization()
+            }
+        }
+        
+        
+        registerCustomWeatherCell()
     }
     
-    func registerCellAndSetDefaultData() {
+    func registerCustomWeatherCell() {
         let nib = UINib(nibName: "WeatherInfoCell", bundle: nil)
         weatherInfoTable.register(nib, forCellReuseIdentifier: "weatherInfoCell")
-        fetchWeatherData(latitude: 23.7104, longitude: 90.4074)
     }
     
     func fetchWeatherData(latitude: Double, longitude: Double) {
@@ -48,22 +69,68 @@ class WeatherInfoViewController: UIViewController {
             self.feelsLikeLabel.text = "Feels like \(Int(weatherInfoData.main.feels_like))ºC"
             self.minTemp.text = "Minimum temperaure \(Int(weatherInfoData.main.temp_min))ºC"
             self.maxTemp.text = "Maximum temperaure \(Int(weatherInfoData.main.temp_max))ºC"
+            self.view.layoutIfNeeded()
             self.weatherInfoTable.reloadData()
         }
     }
     
-    @IBAction func moveToLocationVC(_ sender: UIButton) {
+    @IBAction func currentLocationButtonTapped(_ sender: UIButton) {
+        print(currentLocationLatitude)
+        fetchWeatherData(latitude: currentLocationLatitude, longitude: currentLocationLongitude)
+    }
+    
+    @IBAction func searchLocationButtonTapped(_ sender: UIButton) {
+        locationManager?.stopUpdatingLocation()
         let locationVC = storyboard?.instantiateViewController(withIdentifier: "LocationsViewController") as! LocationsViewController
         locationVC.delegate = self
         navigationController?.pushViewController(locationVC, animated: true)
     }
 }
 
-extension WeatherInfoViewController: UITableViewDelegate, UITableViewDataSource {
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        weatherInfoTable.deselectRow(at: indexPath, animated: true)
+
+
+
+
+
+
+extension WeatherInfoViewController: CLLocationManagerDelegate {
+    
+    func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
+        switch manager.authorizationStatus {
+        case .notDetermined:
+            print("User didn't yet determined")
+        case .restricted:
+            print("Restricted")
+        case .denied:
+            print("Denied")
+        case .authorizedWhenInUse,
+                .authorizedAlways:
+            print("Authorized")
+            manager.startUpdatingLocation()
+        }
     }
     
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        let userLocation = locations[0] as CLLocation
+            self.currentLocationLatitude = userLocation.coordinate.latitude
+            self.currentLocationLongitude = userLocation.coordinate.longitude
+            self.fetchWeatherData(latitude: self.currentLocationLatitude, longitude: self.currentLocationLongitude)
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: any Error) {
+        if manager.authorizationStatus != .notDetermined {
+            let errorAlert = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
+            errorAlert.addAction(UIAlertAction(title: "OK", style: .default))
+            self.present(errorAlert, animated: true)
+        }
+    }
+}
+
+
+
+
+extension WeatherInfoViewController: UITableViewDelegate, UITableViewDataSource {
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 4
     }
@@ -102,8 +169,8 @@ extension WeatherInfoViewController: UITableViewDelegate, UITableViewDataSource 
 }
 
 extension WeatherInfoViewController: PassCityInfo {
+    
     func passCoordinate(latitude: Double, longitude: Double) {
         fetchWeatherData(latitude: latitude, longitude: longitude)
     }
 }
-
