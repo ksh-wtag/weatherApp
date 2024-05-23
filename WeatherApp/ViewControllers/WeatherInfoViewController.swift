@@ -91,10 +91,8 @@ extension WeatherInfoViewController: CLLocationManagerDelegate {
             print("Wait, authorizing...")
         case .authorizedWhenInUse:
             locationManager.requestLocation()
-            
         default:
             print("Default")
-            
         }
     }
     
