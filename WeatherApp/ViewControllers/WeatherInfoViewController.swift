@@ -9,20 +9,21 @@ enum NetworkData: Int {
 }
 
 class WeatherInfoViewController: UIViewController {
+    var currentLocationLatitude: Double = 0.0
+    var currentLocationLongitude: Double = 0.0
+    
+    var weatherInfoData: WeatherInfoData?
+    let locationManager = CLLocationManager()
     
     @IBOutlet weak var cityName: UILabel!
     @IBOutlet weak var temperatureLabel: UILabel!
     @IBOutlet weak var minTemp: UILabel!
     @IBOutlet weak var maxTemp: UILabel!
     @IBOutlet weak var descriptionLabel: UILabel!
+    @IBOutlet weak var descriptionIcon: UIImageView!
     @IBOutlet weak var feelsLikeLabel: UILabel!
     @IBOutlet weak var weatherInfoTable: UITableView!
-    
-    var currentLocationLatitude: Double = 0.0
-    var currentLocationLongitude: Double = 0.0
-    
-    var weatherInfoData: WeatherInfoData?
-    let locationManager = CLLocationManager()
+    @IBOutlet weak var weatherInfoViews: UIView!
     
     @IBAction func currentLocationButtonTapped(_ sender: UIButton) {
         fetchWeatherData(latitude: currentLocationLatitude, longitude: currentLocationLongitude)
@@ -39,6 +40,13 @@ class WeatherInfoViewController: UIViewController {
         super.viewDidLoad()
         getCurrentLocation()
         registerCustomWeatherCell()
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        weatherInfoViews.layer.cornerRadius = weatherInfoViews.frame.size.height / 10
+        weatherInfoViews.layer.masksToBounds = true
+        weatherInfoViews.layer.borderWidth = 0
     }
     
     func registerCustomWeatherCell() {
@@ -68,6 +76,8 @@ class WeatherInfoViewController: UIViewController {
             cityName.text = "\(weatherInfoData.name)"
             self.temperatureLabel.text = "\(Int(weatherInfoData.main.temp))ºC"
             self.descriptionLabel.text = "\(weatherInfoData.weather[0].description)"
+            let iconName = weatherInfoData.weather[0].icon
+            self.descriptionIcon.image = UIImage(named: iconName)
             self.feelsLikeLabel.text = "Feels like \(Int(weatherInfoData.main.feels_like))ºC"
             self.minTemp.text = "Minimum temperaure \(Int(weatherInfoData.main.temp_min))ºC"
             self.maxTemp.text = "Maximum temperaure \(Int(weatherInfoData.main.temp_max))ºC"

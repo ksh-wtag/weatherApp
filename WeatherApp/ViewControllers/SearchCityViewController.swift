@@ -9,8 +9,8 @@ class SearchCityViewController: UIViewController {
     @IBOutlet weak var searchCity: UISearchBar!
     @IBOutlet weak var locationTableView: UITableView!
     
-    var locationList: [City]?
-    var searchData = [City]()
+    var locationList: [CityModel]?
+    var searchData = [CityModel]()
     weak var delegate: SearchCityDelegate?
     
     override func viewDidLoad() {
@@ -26,13 +26,13 @@ class SearchCityViewController: UIViewController {
     }
     
     func allCities() {
-        let dhaka = City(name: "Dhaka",latitude: 23.7104,longitude: 90.4074)
-        let rajshahi = City(name: "Rajshahi",latitude: 24.3667,longitude: 88.6)
-        let khulna = City(name: "Khulna",latitude: 22.8135,longitude: 89.5672)
-        let rangpur = City(name: "Rangpur",latitude: 25.75,longitude: 89.25)
-        let barishal = City(name: "Barishal",latitude: 22.5,longitude: 90.3333)
-        let chattogram = City(name: "Chattogram",latitude: 22.9167,longitude: 91.5)
-        let sylhet = City(name: "Sylhet",latitude: 24.5,longitude: 91.6667)
+        let dhaka = CityModel(name: "Dhaka",latitude: 23.7104,longitude: 90.4074)
+        let rajshahi = CityModel(name: "Rajshahi",latitude: 24.3667,longitude: 88.6)
+        let khulna = CityModel(name: "Khulna",latitude: 22.8135,longitude: 89.5672)
+        let rangpur = CityModel(name: "Rangpur",latitude: 25.75,longitude: 89.25)
+        let barishal = CityModel(name: "Barishal",latitude: 22.5,longitude: 90.3333)
+        let chattogram = CityModel(name: "Chattogram",latitude: 22.9167,longitude: 91.5)
+        let sylhet = CityModel(name: "Sylhet",latitude: 24.5,longitude: 91.6667)
             
         locationList = [dhaka, rajshahi, khulna, rangpur, barishal, chattogram, sylhet]
     }
@@ -53,7 +53,6 @@ extension SearchCityViewController: UISearchBarDelegate {
                 $0.name.lowercased().contains(searchText.lowercased())
             })
         }
-        
         locationTableView.reloadData()
     }
 }
