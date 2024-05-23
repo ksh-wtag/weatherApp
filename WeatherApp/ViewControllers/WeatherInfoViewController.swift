@@ -18,15 +18,25 @@ class WeatherInfoViewController: UIViewController {
     @IBOutlet weak var feelsLikeLabel: UILabel!
     @IBOutlet weak var weatherInfoTable: UITableView!
     
-    var currentLocationLatitude = Double()
-    var currentLocationLongitude = Double()
+    var currentLocationLatitude: Double = 0.0
+    var currentLocationLongitude: Double = 0.0
     
     var weatherInfoData: WeatherInfoData?
-    var locationManager = CLLocationManager()
+    let locationManager = CLLocationManager()
+    
+    @IBAction func currentLocationButtonTapped(_ sender: UIButton) {
+        fetchWeatherData(latitude: currentLocationLatitude, longitude: currentLocationLongitude)
+    }
+    
+    @IBAction func searchLocationButtonTapped(_ sender: UIButton) {
+        
+        let locationVC = storyboard?.instantiateViewController(withIdentifier: "LocationsViewController") as! SearchCityViewController
+        locationVC.delegate = self
+        navigationController?.pushViewController(locationVC, animated: true)
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         getCurrentLocation()
         registerCustomWeatherCell()
     }
@@ -37,14 +47,10 @@ class WeatherInfoViewController: UIViewController {
     }
     
     func getCurrentLocation() {
-        DispatchQueue.global().async {
-            if CLLocationManager.locationServicesEnabled() {
-                self.locationManager.delegate = self
-                self.locationManager.desiredAccuracy = kCLLocationAccuracyBest
-                self.locationManager.requestWhenInUseAuthorization()
-                self.locationManager.startUpdatingLocation()
-            }
-        }
+        self.locationManager.delegate = self
+        self.locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        self.locationManager.requestWhenInUseAuthorization()
+        self.locationManager.requestLocation()
     }
     
     func fetchWeatherData(latitude: Double, longitude: Double) {
@@ -69,21 +75,9 @@ class WeatherInfoViewController: UIViewController {
             self.weatherInfoTable.reloadData()
         }
     }
-    
-    @IBAction func currentLocationButtonTapped(_ sender: UIButton) {
-        fetchWeatherData(latitude: currentLocationLatitude, longitude: currentLocationLongitude)
-    }
-    
-    @IBAction func searchLocationButtonTapped(_ sender: UIButton) {
-        locationManager.stopUpdatingLocation()
-        let locationVC = storyboard?.instantiateViewController(withIdentifier: "LocationsViewController") as! LocationsViewController
-        locationVC.delegate = self
-        navigationController?.pushViewController(locationVC, animated: true)
-    }
 }
 
 extension WeatherInfoViewController: CLLocationManagerDelegate {
-    
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         let userLocation = locations[0] as CLLocation
         currentLocationLatitude = userLocation.coordinate.latitude
@@ -91,18 +85,40 @@ extension WeatherInfoViewController: CLLocationManagerDelegate {
         fetchWeatherData(latitude: currentLocationLatitude, longitude: currentLocationLongitude)
     }
     
-    func locationManager(_ manager: CLLocationManager, didFailWithError error: any Error) {
-        locationManager.stopUpdatingLocation()
-        if locationManager.authorizationStatus != .notDetermined {
-            let errorAlert = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
-            errorAlert.addAction(UIAlertAction(title: "OK", style: .default))
-            present(errorAlert, animated: true)
+    func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
+        switch locationManager.authorizationStatus {
+        case .notDetermined:
+            print("Wait, authorizing...")
+        case .authorizedWhenInUse:
+            locationManager.requestLocation()
+            
+        default:
+            print("Default")
+            
+        }
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) { 
+        if let clErr = error as? CLError {
+            switch clErr.code {
+            case .locationUnknown, .denied, .network:
+                print("Wait for the location permission.")
+            case .headingFailure:
+                print("Heading request failed with error: \(clErr.localizedDescription)")
+            case .rangingUnavailable, .rangingFailure:
+                print("Ranging request failed with error: \(clErr.localizedDescription)")
+            case .regionMonitoringDenied, .regionMonitoringFailure, .regionMonitoringSetupDelayed, .regionMonitoringResponseDelayed:
+                print("Region monitoring request failed with error: \(clErr.localizedDescription)")
+            default:
+                print("Unknown location manager error: \(clErr.localizedDescription)")
+            }
+        } else {
+            print("Unknown error occurred while handling location manager error: \(error.localizedDescription)")
         }
     }
 }
 
 extension WeatherInfoViewController: UITableViewDelegate, UITableViewDataSource {
-    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 4
     }
@@ -140,8 +156,7 @@ extension WeatherInfoViewController: UITableViewDelegate, UITableViewDataSource 
     }
 }
 
-extension WeatherInfoViewController: PassCityInfo {
-    
+extension WeatherInfoViewController: SearchCityDelegate {
     func passCoordinate(latitude: Double, longitude: Double) {
         fetchWeatherData(latitude: latitude, longitude: longitude)
     }

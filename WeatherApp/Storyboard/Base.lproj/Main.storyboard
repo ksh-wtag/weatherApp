@@ -136,10 +136,10 @@
             </objects>
             <point key="canvasLocation" x="984.61538461538453" y="-36.255924170616112"/>
         </scene>
-        <!--Locations View Controller-->
+        <!--Search City View Controller-->
         <scene sceneID="QrW-oA-HHh">
             <objects>
-                <viewController storyboardIdentifier="LocationsViewController" id="RDh-cC-KNn" customClass="LocationsViewController" customModule="WeatherApp" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="LocationsViewController" id="RDh-cC-KNn" customClass="SearchCityViewController" customModule="WeatherApp" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="qTi-Yx-e9I">
                         <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
