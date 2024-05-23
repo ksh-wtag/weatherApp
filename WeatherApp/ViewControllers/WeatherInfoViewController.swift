@@ -22,22 +22,29 @@ class WeatherInfoViewController: UIViewController {
     var currentLocationLongitude = Double()
     
     var weatherInfoData: WeatherInfoData?
-    var locationManager: CLLocationManager?
+    var locationManager = CLLocationManager()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        locationManager = CLLocationManager()
-        locationManager?.delegate = self
-        locationManager?.requestWhenInUseAuthorization()
-        locationManager?.startUpdatingLocation()
-        
+        getCurrentLocation()
         registerCustomWeatherCell()
     }
     
     func registerCustomWeatherCell() {
         let nib = UINib(nibName: "WeatherInfoCell", bundle: nil)
         weatherInfoTable.register(nib, forCellReuseIdentifier: "weatherInfoCell")
+    }
+    
+    func getCurrentLocation() {
+        DispatchQueue.global().async {
+            if CLLocationManager.locationServicesEnabled() {
+                self.locationManager.delegate = self
+                self.locationManager.desiredAccuracy = kCLLocationAccuracyBest
+                self.locationManager.requestWhenInUseAuthorization()
+                self.locationManager.startUpdatingLocation()
+            }
+        }
     }
     
     func fetchWeatherData(latitude: Double, longitude: Double) {
@@ -64,63 +71,38 @@ class WeatherInfoViewController: UIViewController {
     }
     
     @IBAction func currentLocationButtonTapped(_ sender: UIButton) {
-        print(currentLocationLatitude)
         fetchWeatherData(latitude: currentLocationLatitude, longitude: currentLocationLongitude)
     }
     
     @IBAction func searchLocationButtonTapped(_ sender: UIButton) {
-        locationManager?.stopUpdatingLocation()
+        locationManager.stopUpdatingLocation()
         let locationVC = storyboard?.instantiateViewController(withIdentifier: "LocationsViewController") as! LocationsViewController
         locationVC.delegate = self
         navigationController?.pushViewController(locationVC, animated: true)
     }
 }
 
-
-
-
-
-
-
 extension WeatherInfoViewController: CLLocationManagerDelegate {
-    
-    func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
-        switch manager.authorizationStatus {
-        case .notDetermined:
-            print("User didn't yet determined")
-        case .restricted:
-            print("Restricted")
-        case .denied:
-            print("Denied")
-        case .authorizedWhenInUse:
-            print("Authorized")
-        default:
-            print("Default")
-        }
-    }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         let userLocation = locations[0] as CLLocation
-            self.currentLocationLatitude = userLocation.coordinate.latitude
-            self.currentLocationLongitude = userLocation.coordinate.longitude
-            self.fetchWeatherData(latitude: self.currentLocationLatitude, longitude: self.currentLocationLongitude)
+        currentLocationLatitude = userLocation.coordinate.latitude
+        currentLocationLongitude = userLocation.coordinate.longitude
+        fetchWeatherData(latitude: currentLocationLatitude, longitude: currentLocationLongitude)
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: any Error) {
-        locationManager?.stopUpdatingLocation()
-        if locationManager?.authorizationStatus != .authorizedWhenInUse {
+        locationManager.stopUpdatingLocation()
+        if locationManager.authorizationStatus != .notDetermined {
             let errorAlert = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
             errorAlert.addAction(UIAlertAction(title: "OK", style: .default))
-            self.present(errorAlert, animated: true)
+            present(errorAlert, animated: true)
         }
     }
 }
 
-
-
-
 extension WeatherInfoViewController: UITableViewDelegate, UITableViewDataSource {
-
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 4
     }
