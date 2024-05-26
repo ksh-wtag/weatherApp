@@ -5,5 +5,3 @@ struct CityModel {
     let latitude: Double
     let longitude: Double
 }
-
-

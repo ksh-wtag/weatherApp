@@ -15,7 +15,7 @@ class SearchCityViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        allCities()
+        prepareCityList()
         registerCustomLocationCell()
         searchData = locationList ?? []
     }
@@ -25,7 +25,7 @@ class SearchCityViewController: UIViewController {
         locationTableView.register(nib, forCellReuseIdentifier: "locationTableViewCell")
     }
     
-    func allCities() {
+    func prepareCityList() {
         let dhaka = CityModel(name: "Dhaka",latitude: 23.7104,longitude: 90.4074)
         let rajshahi = CityModel(name: "Rajshahi",latitude: 24.3667,longitude: 88.6)
         let khulna = CityModel(name: "Khulna",latitude: 22.8135,longitude: 89.5672)
