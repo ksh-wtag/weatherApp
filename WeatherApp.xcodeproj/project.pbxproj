@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E75171C62C0312DF00BC81C4 /* ApiAddressModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E75171C52C0312DF00BC81C4 /* ApiAddressModel.swift */; };
+		E75171C82C031A7B00BC81C4 /* NetworkIconManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E75171C72C031A7B00BC81C4 /* NetworkIconManager.swift */; };
 		E752E5D12BEA566200958B34 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E752E5D02BEA566200958B34 /* NetworkManager.swift */; };
 		E75AD08D2BE89DE000D940C8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E75AD08C2BE89DE000D940C8 /* AppDelegate.swift */; };
 		E75AD08F2BE89DE000D940C8 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E75AD08E2BE89DE000D940C8 /* SceneDelegate.swift */; };
@@ -27,6 +29,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		E75171C52C0312DF00BC81C4 /* ApiAddressModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiAddressModel.swift; sourceTree = "<group>"; };
+		E75171C72C031A7B00BC81C4 /* NetworkIconManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkIconManager.swift; sourceTree = "<group>"; };
 		E752E5D02BEA566200958B34 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		E75AD0892BE89DE000D940C8 /* WeatherApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WeatherApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E75AD08C2BE89DE000D940C8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -151,6 +155,7 @@
 				E7686CCE2BF497170037505C /* WeatherModel.swift */,
 				E7686CD02BF4973A0037505C /* WindModel.swift */,
 				E78D536E2BF6020B00F01530 /* CityModel.swift */,
+				E75171C52C0312DF00BC81C4 /* ApiAddressModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -159,6 +164,7 @@
 			isa = PBXGroup;
 			children = (
 				E752E5D02BEA566200958B34 /* NetworkManager.swift */,
+				E75171C72C031A7B00BC81C4 /* NetworkIconManager.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -246,9 +252,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				E7686CCD2BF496EA0037505C /* MainModel.swift in Sources */,
+				E75171C82C031A7B00BC81C4 /* NetworkIconManager.swift in Sources */,
 				E7686CD32BF4CB260037505C /* SearchCityViewController.swift in Sources */,
 				E75AD0A32BE8A57B00D940C8 /* WeatherInfoData.swift in Sources */,
 				E75AD0912BE89DE000D940C8 /* WeatherInfoViewController.swift in Sources */,
+				E75171C62C0312DF00BC81C4 /* ApiAddressModel.swift in Sources */,
 				E7686CD12BF4973A0037505C /* WindModel.swift in Sources */,
 				E7900F1E2BECBF52003FD19A /* WeatherInfoCell.swift in Sources */,
 				E78D536F2BF6020B00F01530 /* CityModel.swift in Sources */,

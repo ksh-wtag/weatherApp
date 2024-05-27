@@ -30,7 +30,6 @@ class WeatherInfoViewController: UIViewController {
     }
     
     @IBAction func searchLocationButtonTapped(_ sender: UIButton) {
-        
         let locationVC = storyboard?.instantiateViewController(withIdentifier: "LocationsViewController") as! SearchCityViewController
         locationVC.delegate = self
         navigationController?.pushViewController(locationVC, animated: true)
@@ -63,26 +62,34 @@ class WeatherInfoViewController: UIViewController {
     
     func fetchWeatherData(latitude: Double, longitude: Double) {
         let networkManager  = NetworkManager()
+        let networkIconManager = NetworkIconManager()
+        
         networkManager.fetchWeatherData(latitude: latitude, longitude: longitude, completionHandler: { response in
             self.weatherInfoData = response
+            networkIconManager.fetchWeatherDescriptionIcon(url: URL(string: "https://openweathermap.org/img/wn/\(self.weatherInfoData?.weather[0].icon ?? "")@2x.png")!, completionHandler: { response in
+                let icon = UIImage(data: response!)
+                DispatchQueue.main.async {
+                    self.descriptionIcon.image = icon
+                }
+            })
             DispatchQueue.main.async  {
                 self.updateWeatherDataInView()
             }
         })
     }
-    
+
     func updateWeatherDataInView() {
         if let weatherInfoData = weatherInfoData {
             cityName.text = "\(weatherInfoData.name)"
-            self.temperatureLabel.text = "\(Int(weatherInfoData.main.temp))ºC"
-            self.descriptionLabel.text = "\(weatherInfoData.weather[0].description)"
-            let iconName = weatherInfoData.weather[0].icon
-            self.descriptionIcon.image = UIImage(named: iconName)
-            self.feelsLikeLabel.text = "Feels like \(Int(weatherInfoData.main.feels_like))ºC"
-            self.minTemp.text = "Minimum temperaure \(Int(weatherInfoData.main.temp_min))ºC"
-            self.maxTemp.text = "Maximum temperaure \(Int(weatherInfoData.main.temp_max))ºC"
-            self.view.layoutIfNeeded()
-            self.weatherInfoTable.reloadData()
+            temperatureLabel.text = "\(Int(weatherInfoData.main.temp))ºC"
+            if weatherInfoData.weather.count != 0 {
+                descriptionLabel.text = "\(weatherInfoData.weather[0].description)"
+            }
+            feelsLikeLabel.text = "Feels like \(Int(weatherInfoData.main.feels_like))ºC"
+            minTemp.text = "Minimum temperature \(Int(weatherInfoData.main.temp_min))ºC"
+            maxTemp.text = "Maximum temperature \(Int(weatherInfoData.main.temp_max))ºC"
+            view.layoutIfNeeded()
+            weatherInfoTable.reloadData()
         }
     }
 }
@@ -106,7 +113,7 @@ extension WeatherInfoViewController: CLLocationManagerDelegate {
         }
     }
     
-    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) { 
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         if let clErr = error as? CLError {
             switch clErr.code {
             case .locationUnknown, .denied, .network:

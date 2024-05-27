@@ -33,7 +33,7 @@ class SearchCityViewController: UIViewController {
         let barishal = CityModel(name: "Barishal",latitude: 22.5,longitude: 90.3333)
         let chattogram = CityModel(name: "Chattogram",latitude: 22.9167,longitude: 91.5)
         let sylhet = CityModel(name: "Sylhet",latitude: 24.5,longitude: 91.6667)
-            
+        
         locationList = [dhaka, rajshahi, khulna, rangpur, barishal, chattogram, sylhet]
     }
 }
@@ -41,7 +41,7 @@ class SearchCityViewController: UIViewController {
 extension SearchCityViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         searchData = []
-    
+        
         guard let searchInput = searchCity.text, let locationList = locationList else {
             return
         }
@@ -67,7 +67,7 @@ extension SearchCityViewController: UITableViewDelegate, UITableViewDataSource {
         cell.locationCustomCell.text = searchData[indexPath.row].name
         return cell
     }
-
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if let city = searchData.first(where: {$0.name == searchData[indexPath.row].name}) {
             delegate?.passCoordinate(latitude: city.latitude, longitude: city.longitude)

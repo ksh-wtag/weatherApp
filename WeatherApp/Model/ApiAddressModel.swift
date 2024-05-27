@@ -1,6 +1,6 @@
 import Foundation
  
-struct ApiAddress {
+struct ApiAddressModel {
     let appId = "f7fba2a96004431c6e3b90fb0728bd89"
     
     func getApiAddress(latitude: Double, longitude: Double) -> String{
