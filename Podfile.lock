@@ -1,0 +1,24 @@
+PODS:
+  - MapboxCommon (24.4.0)
+  - MapboxSearch (2.0.0-rc.3):
+    - MapboxCommon (~> 24.0)
+  - MapboxSearchUI (2.0.0-rc.3):
+    - MapboxSearch (< 2.0, >= 2.0.0-rc.3)
+
+DEPENDENCIES:
+  - MapboxSearchUI (< 2.0, >= 1.0.0-beta)
+
+SPEC REPOS:
+  trunk:
+    - MapboxCommon
+    - MapboxSearch
+    - MapboxSearchUI
+
+SPEC CHECKSUMS:
+  MapboxCommon: 6acbd8ff41d66abf498e1558b0739f25c562945a
+  MapboxSearch: e8a67e2e1ceff84df600a531e953184c8a23b94c
+  MapboxSearchUI: d529e44ad9696176aa9d1840b200f3c035c2c058
+
+PODFILE CHECKSUM: e9fac3ca493766c9be8fbcaeb9ed33659e0f00fa
+
+COCOAPODS: 1.15.2

@@ -30,7 +30,7 @@ class WeatherInfoViewController: UIViewController {
     }
     
     @IBAction func searchLocationButtonTapped(_ sender: UIButton) {
-        let locationVC = storyboard?.instantiateViewController(withIdentifier: "LocationsViewController") as! SearchCityViewController
+        let locationVC = storyboard?.instantiateViewController(withIdentifier: "SearchLocationStoryboardID") as! SearchLocationViewController
         locationVC.delegate = self
         navigationController?.pushViewController(locationVC, animated: true)
     }
@@ -60,27 +60,31 @@ class WeatherInfoViewController: UIViewController {
         self.locationManager.requestLocation()
     }
     
-    func fetchWeatherData(latitude: Double, longitude: Double) {
+    func fetchWeatherData(latitude: Double, longitude: Double, locationName: String = "") {
         let networkManager  = NetworkManager()
         let networkIconManager = NetworkIconManager()
         
         networkManager.fetchWeatherData(latitude: latitude, longitude: longitude, completionHandler: { response in
             self.weatherInfoData = response
-            networkIconManager.fetchWeatherDescriptionIcon(url: URL(string: "https://openweathermap.org/img/wn/\(self.weatherInfoData?.weather[0].icon ?? "")@2x.png")!, completionHandler: { response in
+            networkIconManager.fetchWeatherDescriptionIcon(icon: self.weatherInfoData?.weather[0].icon ?? "", completionHandler: { response in
                 let icon = UIImage(data: response!)
                 DispatchQueue.main.async {
                     self.descriptionIcon.image = icon
                 }
             })
             DispatchQueue.main.async  {
-                self.updateWeatherDataInView()
+                if locationName != "" {
+                    self.updateWeatherDataInView(locationName: locationName)
+                } else {
+                    self.updateWeatherDataInView(locationName: self.weatherInfoData?.name ?? "")
+                }
             }
         })
     }
-
-    func updateWeatherDataInView() {
+    
+    func updateWeatherDataInView(locationName: String) {
         if let weatherInfoData = weatherInfoData {
-            cityName.text = "\(weatherInfoData.name)"
+            cityName.text = locationName
             temperatureLabel.text = "\(Int(weatherInfoData.main.temp))ºC"
             if weatherInfoData.weather.count != 0 {
                 descriptionLabel.text = "\(weatherInfoData.weather[0].description)"
@@ -171,8 +175,8 @@ extension WeatherInfoViewController: UITableViewDelegate, UITableViewDataSource 
     }
 }
 
-extension WeatherInfoViewController: SearchCityDelegate {
-    func passCoordinate(latitude: Double, longitude: Double) {
-        fetchWeatherData(latitude: latitude, longitude: longitude)
+extension WeatherInfoViewController: SearchLocationDelegate {
+    func getLocationInformation(locationName: String, latitude: Double, longitude: Double) {
+        fetchWeatherData(latitude: latitude, longitude: longitude, locationName: locationName)
     }
 }
