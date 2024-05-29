@@ -1,3 +1,0 @@
-${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MapboxCommon.framework
-${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MapboxSearch.framework
-${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MapboxSearchUI.framework
