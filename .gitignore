@@ -117,4 +117,11 @@ fastlane/test_output
 
 iOSInjectionProject/
 
+#WeatherApp
+Podfile
+Podfile.lock
+Pods
+WeatherApp.xcodeproj
+WeatherApp.xcworkspace
+
 # End of https://www.toptal.com/developers/gitignore/api/swift,macos
