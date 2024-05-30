@@ -154,58 +154,12 @@
                         <outlet property="temperatureLabel" destination="dfJ-pp-6q7" id="g5k-H5-5fa"/>
                         <outlet property="weatherInfoTable" destination="tWX-Ry-KaY" id="RNx-Pk-ZVf"/>
                         <outlet property="weatherInfoViews" destination="XIG-yJ-vm0" id="Zgu-gv-kxh"/>
+                        <segue destination="Fqe-cm-6Gs" kind="show" id="sfV-Yv-QQN"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="983.07692307692309" y="-38.388625592417057"/>
-        </scene>
-        <!--Search City View Controller-->
-        <scene sceneID="QrW-oA-HHh">
-            <objects>
-                <viewController storyboardIdentifier="LocationsViewController" id="RDh-cC-KNn" customClass="SearchCityViewController" customModule="WeatherApp" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="qTi-Yx-e9I">
-                        <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="2b3-0E-9xB">
-                                <rect key="frame" x="0.0" y="129" width="390" height="715"/>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <color key="sectionIndexBackgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <connections>
-                                    <outlet property="dataSource" destination="RDh-cC-KNn" id="eWA-Yv-Naq"/>
-                                    <outlet property="delegate" destination="RDh-cC-KNn" id="HlM-sP-TjN"/>
-                                </connections>
-                            </tableView>
-                            <searchBar contentMode="redraw" text="" translatesAutoresizingMaskIntoConstraints="NO" id="fcB-mj-YMd">
-                                <rect key="frame" x="0.0" y="55" width="390" height="56"/>
-                                <textInputTraits key="textInputTraits"/>
-                                <connections>
-                                    <outlet property="delegate" destination="RDh-cC-KNn" id="MuB-1r-yLf"/>
-                                </connections>
-                            </searchBar>
-                        </subviews>
-                        <viewLayoutGuide key="safeArea" id="gl8-qs-WyS"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                        <constraints>
-                            <constraint firstItem="2b3-0E-9xB" firstAttribute="leading" secondItem="gl8-qs-WyS" secondAttribute="leading" id="04M-g4-zgc"/>
-                            <constraint firstItem="fcB-mj-YMd" firstAttribute="leading" secondItem="gl8-qs-WyS" secondAttribute="leading" id="IQ4-yA-n2B"/>
-                            <constraint firstItem="2b3-0E-9xB" firstAttribute="top" secondItem="fcB-mj-YMd" secondAttribute="bottom" constant="18" id="M4z-JI-BIc"/>
-                            <constraint firstItem="2b3-0E-9xB" firstAttribute="trailing" secondItem="gl8-qs-WyS" secondAttribute="trailing" id="O2s-AI-tvT"/>
-                            <constraint firstItem="fcB-mj-YMd" firstAttribute="trailing" secondItem="gl8-qs-WyS" secondAttribute="trailing" id="PeI-Dc-2Nf"/>
-                            <constraint firstItem="fcB-mj-YMd" firstAttribute="top" secondItem="gl8-qs-WyS" secondAttribute="top" constant="8" id="R5F-Ej-Dwm"/>
-                            <constraint firstAttribute="bottom" secondItem="2b3-0E-9xB" secondAttribute="bottom" id="Sfi-eP-eXl"/>
-                        </constraints>
-                    </view>
-                    <navigationItem key="navigationItem" id="eqE-eI-aNU"/>
-                    <connections>
-                        <outlet property="locationTableView" destination="2b3-0E-9xB" id="uaK-6A-XdB"/>
-                        <outlet property="searchCity" destination="fcB-mj-YMd" id="F9Y-7A-zsG"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="TGr-6X-eeA" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1770.7692307692307" y="-36.255924170616112"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="wYp-lj-uFk">
@@ -232,22 +186,44 @@
                     <view key="view" contentMode="scaleToFill" id="kdW-EX-3En">
                         <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <searchBar contentMode="redraw" fixedFrame="YES" searchBarStyle="minimal" placeholder="Search for a location" translatesAutoresizingMaskIntoConstraints="NO" id="AOK-sD-s4Q">
+                                <rect key="frame" x="0.0" y="110" width="390" height="44"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <outlet property="delegate" destination="Fqe-cm-6Gs" id="LE2-Qy-A5g"/>
+                                </connections>
+                            </searchBar>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="3MO-Wc-48H">
+                                <rect key="frame" x="0.0" y="165" width="390" height="653"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="Fqe-cm-6Gs" id="t3g-NQ-mUo"/>
+                                    <outlet property="delegate" destination="Fqe-cm-6Gs" id="SEP-O5-aXj"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
                         <viewLayoutGuide key="safeArea" id="l6e-Tl-kcg"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <color key="backgroundColor" red="0.71338531366083491" green="0.84369578011947988" blue="0.94316208964646464" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
+                    <navigationItem key="navigationItem" id="dbn-5b-iMf"/>
+                    <connections>
+                        <outlet property="SuggestionTableView" destination="3MO-Wc-48H" id="obc-e2-zCp"/>
+                        <outlet property="suggestionSearchBar" destination="AOK-sD-s4Q" id="cvD-Pv-6rp"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SQM-bm-Od7" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1771" y="657"/>
+            <point key="canvasLocation" x="1840" y="-36"/>
         </scene>
     </scenes>
     <resources>
         <image name="BackgroundImage" width="850" height="1840"/>
         <systemColor name="separatorColor">
-            <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.28999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
-        </systemColor>
-        <systemColor name="systemBackgroundColor">
-            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <color red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.28999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="tableSeparatorLightColor">
             <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.28999999999999998" colorSpace="custom" customColorSpace="sRGB"/>

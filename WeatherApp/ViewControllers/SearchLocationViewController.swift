@@ -1,40 +1,58 @@
 import UIKit
-import MapboxSearch
-import MapboxSearchUI
 
 protocol SearchLocationDelegate: AnyObject {
-    func getLocationInformation(locationName: String, latitude: Double, longitude: Double)
+    func getLocationInformation(latitude: Double, longitude: Double, locationName: String)
 }
 
 class SearchLocationViewController: UIViewController {
-    var searchController = MapboxSearchController()
+    @IBOutlet weak var suggestionSearchBar: UISearchBar!
+    @IBOutlet weak var SuggestionTableView: UITableView!
+    
+    var suggestedLocation: SuggestedLocation?
+    var suggestNetworkCall = SuggestNewtowrkCall()
+    var retriveCoordinates: Retrive?
+    var retriveNetworkCall = RetriveNetworkCall()
     weak var delegate: SearchLocationDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        searchController.delegate = self
-        let panelController = MapboxPanelController(rootViewController: searchController)
-        addChild(panelController)
+        let nib = UINib(nibName: "SuggestionTableViewCell", bundle: nil)
+        SuggestionTableView.register(nib, forCellReuseIdentifier: "cell")
     }
 }
 
-extension SearchLocationViewController: SearchControllerDelegate {
-    func categorySearchResultsReceived(category: MapboxSearchUI.SearchCategory, results: [any MapboxSearch.SearchResult]) {
+extension SearchLocationViewController: UISearchBarDelegate {
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        if searchText.count >= 4 {
+            suggestNetworkCall.fetchLocationSuggetion(searchText: searchText, completionHandler: { response in
+                DispatchQueue.main.async {
+                    self.suggestedLocation = response
+                    self.SuggestionTableView.reloadData()
+                }
+            })
+        }
     }
-    
-    func categorySearchResultsReceived(results: [SearchResult]) {
-    }
-    
-    func searchResultSelected(_ searchResult: SearchResult) {
-        let locationName = searchResult.name
-        let location = searchResult.placemark.location!.coordinate
-        let latitude = location.latitude
-        let longitude = location.longitude
-        delegate?.getLocationInformation(locationName: locationName,latitude: latitude, longitude: longitude)
+}
+
+extension SearchLocationViewController: UITableViewDelegate, UITableViewDataSource{
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        retriveNetworkCall.fetchRetrivedData(mapboxId: suggestedLocation?.suggestions[indexPath.row].mapbox_id ?? "", completionHandler: { response in
+            self.retriveCoordinates = response
+            let latitude = self.retriveCoordinates!.features[0].properties.coordinates.latitude
+            let longitude = self.retriveCoordinates!.features[0].properties.coordinates.longitude
+            let locationName = self.retriveCoordinates!.features[0].properties.name
+            self.delegate?.getLocationInformation(latitude: latitude, longitude: longitude, locationName: locationName)
+        })
         navigationController?.popViewController(animated: true)
     }
     
-    func userFavoriteSelected(_ userFavorite: FavoriteRecord) {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return suggestedLocation?.suggestions.count ?? 0
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = SuggestionTableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! SuggestionTableViewCell
+        cell.suggestionLabel.text = suggestedLocation?.suggestions[indexPath.row].name ?? ""
+        return cell
     }
 }
-

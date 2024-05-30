@@ -62,22 +62,24 @@ class WeatherInfoViewController: UIViewController {
     
     func fetchWeatherData(latitude: Double, longitude: Double, locationName: String = "") {
         let networkManager  = NetworkManager()
-        let networkIconManager = NetworkIconManager()
         
-        networkManager.fetchWeatherData(latitude: latitude, longitude: longitude, completionHandler: { response in
+        networkManager.fetchWeatherData(latitude: latitude, longitude: longitude, locationName: locationName, completionHandler: { response in
             self.weatherInfoData = response
-            networkIconManager.fetchWeatherDescriptionIcon(icon: self.weatherInfoData?.weather[0].icon ?? "", completionHandler: { response in
-                let icon = UIImage(data: response!)
-                DispatchQueue.main.async {
-                    self.descriptionIcon.image = icon
-                }
-            })
-            DispatchQueue.main.async  {
-                if locationName != "" {
-                    self.updateWeatherDataInView(locationName: locationName)
-                } else {
-                    self.updateWeatherDataInView(locationName: self.weatherInfoData?.name ?? "")
-                }
+            if !locationName.isEmpty {
+                self.fetchIconAndUpdateView(locationName: locationName)
+            }else {
+                self.fetchIconAndUpdateView(locationName: self.weatherInfoData?.name ?? "")
+            }
+        })
+    }
+    
+    func fetchIconAndUpdateView(locationName: String) {
+        let networkIconManager = NetworkIconManager()
+        networkIconManager.fetchWeatherDescriptionIcon(icon: self.weatherInfoData?.weather[0].icon ?? "", completionHandler: { response in
+            let icon = UIImage(data: response!)
+            DispatchQueue.main.async {
+                self.descriptionIcon.image = icon
+                self.updateWeatherDataInView(locationName: locationName)
             }
         })
     }
@@ -176,7 +178,7 @@ extension WeatherInfoViewController: UITableViewDelegate, UITableViewDataSource 
 }
 
 extension WeatherInfoViewController: SearchLocationDelegate {
-    func getLocationInformation(locationName: String, latitude: Double, longitude: Double) {
-        fetchWeatherData(latitude: latitude, longitude: longitude, locationName: locationName)
+    func getLocationInformation(latitude: Double, longitude: Double, locationName: String) {
+        fetchWeatherData(latitude: latitude, longitude: longitude,locationName: locationName)
     }
 }
