@@ -22,22 +22,23 @@ class SearchLocationViewController: UIViewController {
         super.viewDidLoad()
         registerNibFile()
         SuggestionTableView.isUserInteractionEnabled = false
-        let cameraOptions = CameraOptions(
-          center: CLLocationCoordinate2D(latitude: 23.763565654470767, longitude: 90.38946110570834),
-          zoom: 12)
-        let mapInitOptions = MapInitOptions(cameraOptions: cameraOptions, styleURI: .light)
-        mapView = MapView(frame: mapViewController.bounds, mapInitOptions: mapInitOptions)
-        mapView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        mapViewController.addSubview(mapView)
- 
-        
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleMapTap(_:)))
-        mapView.addGestureRecognizer(tapGesture)
+        setMapAndGestureAction()
     }
     
     func registerNibFile() {
         let nib = UINib(nibName: "SuggestionTableViewCell", bundle: nil)
         SuggestionTableView.register(nib, forCellReuseIdentifier: "cell")
+    }
+    
+    func setMapAndGestureAction() {
+        let cameraOptions = CameraOptions(center: CLLocationCoordinate2D(latitude: 23.763565654470767, longitude: 90.38946110570834), zoom: 12)
+        let mapInitOptions = MapInitOptions(cameraOptions: cameraOptions, styleURI: .light)
+        mapView = MapView(frame: mapViewController.bounds, mapInitOptions: mapInitOptions)
+        mapView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        mapViewController.addSubview(mapView)
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleMapTap(_:)))
+        mapView.addGestureRecognizer(tapGesture)
     }
     
     @objc func handleMapTap(_ gestureRecognizer: UITapGestureRecognizer) {
