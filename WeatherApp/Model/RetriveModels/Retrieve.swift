@@ -1,5 +1,5 @@
 import Foundation
 
-class Retrive: Codable {
+class Retrieve: Codable {
     let features: [Feature]
 }

@@ -12,7 +12,7 @@ class SearchLocationViewController: UIViewController {
     
     var suggestedLocation: SuggestedLocation?
     var suggestNetworkCall = SuggestNewtowrkCall()
-    var retriveCoordinates: Retrive?
+    var retriveCoordinates: Retrieve?
     var retriveNetworkCall = RetriveNetworkCall()
     
     weak var delegate: SearchLocationDelegate?
