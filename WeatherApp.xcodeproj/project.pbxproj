@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		D27F79F61D486F0EEC4CDA2A /* Pods_WeatherApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 265E1D611C673FAFE6F41238 /* Pods_WeatherApp.framework */; };
-		E75171C62C0312DF00BC81C4 /* ApiAddressModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E75171C52C0312DF00BC81C4 /* ApiAddressModel.swift */; };
+		E75171C62C0312DF00BC81C4 /* WeatherInfoAddressModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E75171C52C0312DF00BC81C4 /* WeatherInfoAddressModel.swift */; };
 		E75171C82C031A7B00BC81C4 /* NetworkIconManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E75171C72C031A7B00BC81C4 /* NetworkIconManager.swift */; };
 		E752E5D12BEA566200958B34 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E752E5D02BEA566200958B34 /* NetworkManager.swift */; };
 		E7557F502C08557C00F43026 /* SuggestNewtowrkCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7557F4F2C08557C00F43026 /* SuggestNewtowrkCall.swift */; };
@@ -43,7 +43,7 @@
 		265E1D611C673FAFE6F41238 /* Pods_WeatherApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WeatherApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9EED939DD977A2A02B260DF7 /* Pods-WeatherApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WeatherApp.release.xcconfig"; path = "Target Support Files/Pods-WeatherApp/Pods-WeatherApp.release.xcconfig"; sourceTree = "<group>"; };
 		CE589539E7941DECE2BE5DD2 /* Pods-WeatherApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WeatherApp.debug.xcconfig"; path = "Target Support Files/Pods-WeatherApp/Pods-WeatherApp.debug.xcconfig"; sourceTree = "<group>"; };
-		E75171C52C0312DF00BC81C4 /* ApiAddressModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiAddressModel.swift; sourceTree = "<group>"; };
+		E75171C52C0312DF00BC81C4 /* WeatherInfoAddressModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherInfoAddressModel.swift; sourceTree = "<group>"; };
 		E75171C72C031A7B00BC81C4 /* NetworkIconManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkIconManager.swift; sourceTree = "<group>"; };
 		E752E5D02BEA566200958B34 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		E7557F4F2C08557C00F43026 /* SuggestNewtowrkCall.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SuggestNewtowrkCall.swift; path = ../../../MapboxCustomSearch/MapboxCustomSearch/SuggestNewtowrkCall.swift; sourceTree = "<group>"; };
@@ -197,7 +197,7 @@
 		E7557F6C2C089D9F00F43026 /* BaseApiModels */ = {
 			isa = PBXGroup;
 			children = (
-				E75171C52C0312DF00BC81C4 /* ApiAddressModel.swift */,
+				E75171C52C0312DF00BC81C4 /* WeatherInfoAddressModel.swift */,
 			);
 			path = BaseApiModels;
 			sourceTree = "<group>";
@@ -397,7 +397,7 @@
 				E75AD0A32BE8A57B00D940C8 /* WeatherInfoData.swift in Sources */,
 				E7557F652C08845900F43026 /* RetriveNetworkCall.swift in Sources */,
 				E75AD0912BE89DE000D940C8 /* WeatherInfoViewController.swift in Sources */,
-				E75171C62C0312DF00BC81C4 /* ApiAddressModel.swift in Sources */,
+				E75171C62C0312DF00BC81C4 /* WeatherInfoAddressModel.swift in Sources */,
 				E7686CD12BF4973A0037505C /* WindModel.swift in Sources */,
 				E7900F1E2BECBF52003FD19A /* WeatherInfoCell.swift in Sources */,
 				E7557F502C08557C00F43026 /* SuggestNewtowrkCall.swift in Sources */,

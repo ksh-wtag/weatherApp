@@ -4,4 +4,5 @@
 use_frameworks!
 target "WeatherApp" do
   pod 'MapboxSearchUI', ">= 1.0.0-beta", "< 2.0"
+  pod 'MapboxMaps', '11.4.0'
 end

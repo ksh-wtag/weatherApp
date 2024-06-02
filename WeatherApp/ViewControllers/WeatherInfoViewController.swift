@@ -62,7 +62,6 @@ class WeatherInfoViewController: UIViewController {
     
     func fetchWeatherData(latitude: Double, longitude: Double, locationName: String = "") {
         let networkManager  = NetworkManager()
-        
         networkManager.fetchWeatherData(latitude: latitude, longitude: longitude, locationName: locationName, completionHandler: { response in
             self.weatherInfoData = response
             if !locationName.isEmpty {
