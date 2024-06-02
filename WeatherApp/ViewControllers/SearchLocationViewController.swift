@@ -46,8 +46,6 @@ class SearchLocationViewController: UIViewController {
         let coordinate = mapView.mapboxMap.coordinate(for: tapPoint)
         let latitude = coordinate.latitude
         let longitude = coordinate.longitude
-        print(latitude)
-        print(longitude)
         delegate?.getLocationInformation(latitude: latitude, longitude: longitude, locationName: "")
         navigationController!.popViewController(animated: true)
     }
