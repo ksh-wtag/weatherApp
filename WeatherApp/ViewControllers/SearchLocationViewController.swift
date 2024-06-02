@@ -22,11 +22,15 @@ class SearchLocationViewController: UIViewController {
         super.viewDidLoad()
         registerNibFile()
         SuggestionTableView.isUserInteractionEnabled = false
-        let mapInitOptions = MapInitOptions(styleURI: .light)
+        let cameraOptions = CameraOptions(
+          center: CLLocationCoordinate2D(latitude: 23.763565654470767, longitude: 90.38946110570834),
+          zoom: 12)
+        let mapInitOptions = MapInitOptions(cameraOptions: cameraOptions, styleURI: .light)
         mapView = MapView(frame: mapViewController.bounds, mapInitOptions: mapInitOptions)
         mapView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         mapViewController.addSubview(mapView)
-
+ 
+        
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleMapTap(_:)))
         mapView.addGestureRecognizer(tapGesture)
     }
@@ -41,6 +45,8 @@ class SearchLocationViewController: UIViewController {
         let coordinate = mapView.mapboxMap.coordinate(for: tapPoint)
         let latitude = coordinate.latitude
         let longitude = coordinate.longitude
+        print(latitude)
+        print(longitude)
         delegate?.getLocationInformation(latitude: latitude, longitude: longitude, locationName: "")
         navigationController!.popViewController(animated: true)
     }
