@@ -15,6 +15,9 @@ class WeatherInfoViewController: UIViewController {
     var weatherInfoData: WeatherInfoData?
     let locationManager = CLLocationManager()
     
+    var databaseOperation = DatabaseOperations()
+    var weatherDataModel = WeatherDataModel()
+    
     @IBOutlet weak var cityName: UILabel!
     @IBOutlet weak var temperatureLabel: UILabel!
     @IBOutlet weak var minTemp: UILabel!
@@ -62,12 +65,19 @@ class WeatherInfoViewController: UIViewController {
     
     func fetchWeatherData(latitude: Double, longitude: Double, locationName: String = "") {
         let networkManager  = NetworkManager()
-        networkManager.fetchWeatherData(latitude: latitude, longitude: longitude, locationName: locationName, completionHandler: { response in
-            self.weatherInfoData = response
-            if !locationName.isEmpty {
-                self.fetchIconAndUpdateView(locationName: locationName)
+        networkManager.fetchWeatherData(latitude: latitude, longitude: longitude, locationName: locationName, completionHandler: { response, error in
+            if error == nil {
+                self.weatherInfoData = response
+                if !locationName.isEmpty {
+                    self.fetchIconAndUpdateView(locationName: locationName)
+                }else {
+                    self.fetchIconAndUpdateView(locationName: self.weatherInfoData?.name ?? "")
+                }
             }else {
-                self.fetchIconAndUpdateView(locationName: self.weatherInfoData?.name ?? "")
+                DispatchQueue.main.async {
+                    self.showErrorAlert(error: error!)
+                    self.updateFromDatabase()
+                }
             }
         })
     }
@@ -75,20 +85,41 @@ class WeatherInfoViewController: UIViewController {
     func fetchIconAndUpdateView(locationName: String) {
         let networkIconManager = NetworkIconManager()
         networkIconManager.fetchWeatherDescriptionIcon(icon: self.weatherInfoData?.weather[0].icon ?? "", completionHandler: { response in
-            let icon = UIImage(data: response!)
             DispatchQueue.main.async {
-                self.descriptionIcon.image = icon
-                self.updateWeatherDataInView(locationName: locationName)
+                if response == nil {
+                    self.updateFromDatabase()
+                } else {
+                    if let weatherInfoData = self.weatherInfoData {
+                        self.databaseOperation.createRecord(response: weatherInfoData, iconResponse: response!)
+                        self.updateWeatherDataInView(locationName: locationName, response: response!)
+                    }
+                }
             }
         })
     }
     
-    func updateWeatherDataInView(locationName: String) {
+    func updateFromDatabase() {
+        weatherDataModel = databaseOperation.readRecord()!
+        cityName.text = weatherDataModel.locationName
+        temperatureLabel.text = "\(Int(weatherDataModel.temperature!))ºC"
+        descriptionLabel.text = weatherDataModel.weatherDescription
+        let icon = UIImage(data: weatherDataModel.descriptionIcon)
+        self.descriptionIcon.image = icon
+        feelsLikeLabel.text = "Feels like \(Int(weatherDataModel.feelsLike!))ºC"
+        minTemp.text = "Minimum temperature \(Int(weatherDataModel.minimumTemperature!))ºC"
+        maxTemp.text = "Maximum temperature \(Int(weatherDataModel.maximumTemperature!))ºC"
+        view.layoutIfNeeded()
+        weatherInfoTable.reloadData()
+    }
+    
+    func updateWeatherDataInView(locationName: String, response: Data) {
         if let weatherInfoData = weatherInfoData {
             cityName.text = locationName
             temperatureLabel.text = "\(Int(weatherInfoData.main.temp))ºC"
             if weatherInfoData.weather.count != 0 {
                 descriptionLabel.text = "\(weatherInfoData.weather[0].description)"
+                let icon = UIImage(data: response)
+                self.descriptionIcon.image = icon
             }
             feelsLikeLabel.text = "Feels like \(Int(weatherInfoData.main.feels_like))ºC"
             minTemp.text = "Minimum temperature \(Int(weatherInfoData.main.temp_min))ºC"
@@ -96,6 +127,12 @@ class WeatherInfoViewController: UIViewController {
             view.layoutIfNeeded()
             weatherInfoTable.reloadData()
         }
+    }
+    
+    func showErrorAlert(error: Error) {
+        let alert = UIAlertController(title: "No Internet", message: "\(error.localizedDescription)", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Dismiss", style: .cancel))
+        present(alert, animated: true)
     }
 }
 
@@ -153,16 +190,16 @@ extension WeatherInfoViewController: UITableViewDelegate, UITableViewDataSource 
         
         switch networkData {
         case .pressure:
-            weatherValue = "\(weatherInfoData?.main.pressure ?? 0) Pa"
+            weatherValue = "\(weatherDataModel.pressure ?? 0) Pa"
             weatherTitle = "Pressure"
         case .humidity:
-            weatherValue = "\(weatherInfoData?.main.humidity ?? 0) %"
+            weatherValue = "\(weatherDataModel.humidity ?? 0) %"
             weatherTitle = "Humidity"
         case .visibility:
-            weatherValue = "\(weatherInfoData?.visibility ?? 0) km"
+            weatherValue = "\(weatherDataModel.visibility ?? 0) km"
             weatherTitle = "Visibility"
         case .windSpeed:
-            weatherValue = "\(weatherInfoData?.wind.speed ?? 0) km/h"
+            weatherValue = "\(weatherDataModel.windSpeed ?? 0) km/h"
             weatherTitle = "Wind Speed"
         default:
             weatherValue = ""
