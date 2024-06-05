@@ -29,13 +29,7 @@ class DatabaseOperations {
     
     func readRecord() -> WeatherDataModel?{
         let realm = try! Realm()
-        do{
-            try realm.write {
-                weatherDataModel = realm.objects(WeatherDataModel.self).last!
-            }
-        }catch {
-            return nil
-        }
+        weatherDataModel = realm.objects(WeatherDataModel.self).last!
         return weatherDataModel
     }
 }

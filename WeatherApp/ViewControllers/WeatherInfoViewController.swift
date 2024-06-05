@@ -74,9 +74,14 @@ class WeatherInfoViewController: UIViewController {
                     self.fetchIconAndUpdateView(locationName: self.weatherInfoData?.name ?? "")
                 }
             }else {
+                if let readData = self.databaseOperation.readRecord() {
+                    self.weatherDataModel = readData
+                }
+                self.useDataInDatabase()
+                let iconData = self.weatherDataModel.descriptionIcon
                 DispatchQueue.main.async {
                     self.showErrorAlert(error: error!)
-                    self.updateFromDatabase()
+                    self.updateWeatherDataInView(locationName: self.weatherInfoData?.name ?? "", response: iconData)
                 }
             }
         })
@@ -85,31 +90,21 @@ class WeatherInfoViewController: UIViewController {
     func fetchIconAndUpdateView(locationName: String) {
         let networkIconManager = NetworkIconManager()
         networkIconManager.fetchWeatherDescriptionIcon(icon: self.weatherInfoData?.weather[0].icon ?? "", completionHandler: { response in
-            DispatchQueue.main.async {
-                if response == nil {
-                    self.updateFromDatabase()
-                } else {
-                    if let weatherInfoData = self.weatherInfoData {
-                        self.databaseOperation.createRecord(response: weatherInfoData, iconResponse: response!)
-                        self.updateWeatherDataInView(locationName: locationName, response: response!)
-                    }
+            if let weatherInfoData = self.weatherInfoData, let response = response {
+                DispatchQueue.main.async {
+                    self.databaseOperation.createRecord(response: weatherInfoData, iconResponse: response)
+                    self.updateWeatherDataInView(locationName: locationName, response: response)
                 }
             }
         })
     }
     
-    func updateFromDatabase() {
-        weatherDataModel = databaseOperation.readRecord()!
-        cityName.text = weatherDataModel.locationName
-        temperatureLabel.text = "\(Int(weatherDataModel.temperature!))ºC"
-        descriptionLabel.text = weatherDataModel.weatherDescription
-        let icon = UIImage(data: weatherDataModel.descriptionIcon)
-        self.descriptionIcon.image = icon
-        feelsLikeLabel.text = "Feels like \(Int(weatherDataModel.feelsLike!))ºC"
-        minTemp.text = "Minimum temperature \(Int(weatherDataModel.minimumTemperature!))ºC"
-        maxTemp.text = "Maximum temperature \(Int(weatherDataModel.maximumTemperature!))ºC"
-        view.layoutIfNeeded()
-        weatherInfoTable.reloadData()
+    func useDataInDatabase() {
+        let main = Main(temp: self.weatherDataModel.temperature ?? 0, feels_like: self.weatherDataModel.feelsLike ?? 0, temp_min: self.weatherDataModel.minimumTemperature ?? 0, temp_max: self.weatherDataModel.maximumTemperature ?? 0, pressure: self.weatherDataModel.pressure ?? 0, humidity: self.weatherDataModel.humidity ?? 0)
+        let wind = Wind(speed: self.weatherDataModel.windSpeed ?? 0)
+        let weather = Weather(description: self.weatherDataModel.weatherDescription ?? "", icon: String(decoding: self.weatherDataModel.descriptionIcon, as: UTF8.self))
+        let weatherDatabaseData = WeatherInfoData(weather: [weather], main: main, visibility: self.weatherDataModel.visibility ?? 0, wind: wind, name: self.weatherDataModel.locationName ?? "")
+        self.weatherInfoData = weatherDatabaseData
     }
     
     func updateWeatherDataInView(locationName: String, response: Data) {
@@ -190,16 +185,16 @@ extension WeatherInfoViewController: UITableViewDelegate, UITableViewDataSource 
         
         switch networkData {
         case .pressure:
-            weatherValue = "\(weatherDataModel.pressure ?? 0) Pa"
+            weatherValue = "\(weatherInfoData?.main.pressure ?? 0) Pa"
             weatherTitle = "Pressure"
         case .humidity:
-            weatherValue = "\(weatherDataModel.humidity ?? 0) %"
+            weatherValue = "\(weatherInfoData?.main.humidity ?? 0) %"
             weatherTitle = "Humidity"
         case .visibility:
-            weatherValue = "\(weatherDataModel.visibility ?? 0) km"
+            weatherValue = "\(weatherInfoData?.visibility ?? 0) km"
             weatherTitle = "Visibility"
         case .windSpeed:
-            weatherValue = "\(weatherDataModel.windSpeed ?? 0) km/h"
+            weatherValue = "\(weatherInfoData?.wind.speed ?? 0) km/h"
             weatherTitle = "Wind Speed"
         default:
             weatherValue = ""

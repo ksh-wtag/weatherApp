@@ -1,6 +1,6 @@
 import Foundation
 
-class RetriveNetworkCall {
+class RetriveNetworkManager {
     func fetchRetrivedData(mapboxId: String, completionHandler:  @escaping (Retrieve?) -> Void) {
         DispatchQueue.global(qos: .userInitiated).async {
             let url = URL(string: "https://api.mapbox.com/search/searchbox/v1/retrieve/\(mapboxId)?session_token=&access_token=pk.eyJ1IjoiLXJhdHVsLSIsImEiOiJjbHdvbnhkbHQybTIwMmttajdmeHEyNXh1In0.m4VC17opYXOoFeRo5jyKXg")

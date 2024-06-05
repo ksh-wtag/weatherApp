@@ -11,9 +11,9 @@ class SearchLocationViewController: UIViewController {
     @IBOutlet weak var mapViewController: UIView!
     
     var suggestedLocation: SuggestedLocation?
-    var suggestNetworkCall = SuggestNewtowrkCall()
+    var suggestNetworkCall = SuggestNewtowrkManager()
     var retriveCoordinates: Retrieve?
-    var retriveNetworkCall = RetriveNetworkCall()
+    var retriveNetworkCall = RetriveNetworkManager()
     
     weak var delegate: SearchLocationDelegate?
     var mapView: MapView!
