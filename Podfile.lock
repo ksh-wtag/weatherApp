@@ -1,0 +1,48 @@
+PODS:
+  - MapboxCommon (24.4.0)
+  - MapboxCoreMaps (11.4.0):
+    - MapboxCommon (~> 24.4)
+  - MapboxMaps (11.4.0):
+    - MapboxCommon (= 24.4.0)
+    - MapboxCoreMaps (= 11.4.0)
+    - Turf (= 2.8.0)
+  - MapboxSearch (2.0.0-rc.3):
+    - MapboxCommon (~> 24.0)
+  - MapboxSearchUI (2.0.0-rc.3):
+    - MapboxSearch (< 2.0, >= 2.0.0-rc.3)
+  - Realm (10.50.1):
+    - Realm/Headers (= 10.50.1)
+  - Realm/Headers (10.50.1)
+  - RealmSwift (10.50.1):
+    - Realm (= 10.50.1)
+  - Turf (2.8.0)
+
+DEPENDENCIES:
+  - MapboxMaps (= 11.4.0)
+  - MapboxSearchUI (< 2.0, >= 1.0.0-beta)
+  - RealmSwift (~> 10)
+
+SPEC REPOS:
+  trunk:
+    - MapboxCommon
+    - MapboxCoreMaps
+    - MapboxMaps
+    - MapboxSearch
+    - MapboxSearchUI
+    - Realm
+    - RealmSwift
+    - Turf
+
+SPEC CHECKSUMS:
+  MapboxCommon: 6acbd8ff41d66abf498e1558b0739f25c562945a
+  MapboxCoreMaps: f306bb1b10ebe995a2247b40e99322ab7f9b8071
+  MapboxMaps: 82044383ae19ec124ff444ec4b5d3ce82cb36ba5
+  MapboxSearch: e8a67e2e1ceff84df600a531e953184c8a23b94c
+  MapboxSearchUI: d529e44ad9696176aa9d1840b200f3c035c2c058
+  Realm: 36bc9fe2681d7cf234aa487e7990821c772206a2
+  RealmSwift: 84a370d3d4f191d327a9f8ade1f064a274f79847
+  Turf: aa2ede4298009639d10db36aba1a7ebaad072a5e
+
+PODFILE CHECKSUM: 6234ea5ab6f61d2d5ee8ba5185d832b2750e0020
+
+COCOAPODS: 1.15.2

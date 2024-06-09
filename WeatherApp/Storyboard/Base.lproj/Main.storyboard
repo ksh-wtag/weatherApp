@@ -2,7 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="32700.99.1234" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="um9-VG-zep">
     <device id="retina6_0" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22684"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22685"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -154,58 +154,12 @@
                         <outlet property="temperatureLabel" destination="dfJ-pp-6q7" id="g5k-H5-5fa"/>
                         <outlet property="weatherInfoTable" destination="tWX-Ry-KaY" id="RNx-Pk-ZVf"/>
                         <outlet property="weatherInfoViews" destination="XIG-yJ-vm0" id="Zgu-gv-kxh"/>
+                        <segue destination="Fqe-cm-6Gs" kind="show" identifier="weatherInfoViewController" id="sfV-Yv-QQN"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="983.07692307692309" y="-38.388625592417057"/>
-        </scene>
-        <!--Search City View Controller-->
-        <scene sceneID="QrW-oA-HHh">
-            <objects>
-                <viewController storyboardIdentifier="LocationsViewController" id="RDh-cC-KNn" customClass="SearchCityViewController" customModule="WeatherApp" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="qTi-Yx-e9I">
-                        <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="2b3-0E-9xB">
-                                <rect key="frame" x="0.0" y="129" width="390" height="715"/>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <color key="sectionIndexBackgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <connections>
-                                    <outlet property="dataSource" destination="RDh-cC-KNn" id="eWA-Yv-Naq"/>
-                                    <outlet property="delegate" destination="RDh-cC-KNn" id="HlM-sP-TjN"/>
-                                </connections>
-                            </tableView>
-                            <searchBar contentMode="redraw" text="" translatesAutoresizingMaskIntoConstraints="NO" id="fcB-mj-YMd">
-                                <rect key="frame" x="0.0" y="55" width="390" height="56"/>
-                                <textInputTraits key="textInputTraits"/>
-                                <connections>
-                                    <outlet property="delegate" destination="RDh-cC-KNn" id="MuB-1r-yLf"/>
-                                </connections>
-                            </searchBar>
-                        </subviews>
-                        <viewLayoutGuide key="safeArea" id="gl8-qs-WyS"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                        <constraints>
-                            <constraint firstItem="2b3-0E-9xB" firstAttribute="leading" secondItem="gl8-qs-WyS" secondAttribute="leading" id="04M-g4-zgc"/>
-                            <constraint firstItem="fcB-mj-YMd" firstAttribute="leading" secondItem="gl8-qs-WyS" secondAttribute="leading" id="IQ4-yA-n2B"/>
-                            <constraint firstItem="2b3-0E-9xB" firstAttribute="top" secondItem="fcB-mj-YMd" secondAttribute="bottom" constant="18" id="M4z-JI-BIc"/>
-                            <constraint firstItem="2b3-0E-9xB" firstAttribute="trailing" secondItem="gl8-qs-WyS" secondAttribute="trailing" id="O2s-AI-tvT"/>
-                            <constraint firstItem="fcB-mj-YMd" firstAttribute="trailing" secondItem="gl8-qs-WyS" secondAttribute="trailing" id="PeI-Dc-2Nf"/>
-                            <constraint firstItem="fcB-mj-YMd" firstAttribute="top" secondItem="gl8-qs-WyS" secondAttribute="top" constant="8" id="R5F-Ej-Dwm"/>
-                            <constraint firstAttribute="bottom" secondItem="2b3-0E-9xB" secondAttribute="bottom" id="Sfi-eP-eXl"/>
-                        </constraints>
-                    </view>
-                    <navigationItem key="navigationItem" id="eqE-eI-aNU"/>
-                    <connections>
-                        <outlet property="locationTableView" destination="2b3-0E-9xB" id="uaK-6A-XdB"/>
-                        <outlet property="searchCity" destination="fcB-mj-YMd" id="F9Y-7A-zsG"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="TGr-6X-eeA" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1770.7692307692307" y="-36.255924170616112"/>
+            <point key="canvasLocation" x="989" y="-36"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="wYp-lj-uFk">
@@ -224,6 +178,62 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="e2J-YI-j8m" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="52.307692307692307" y="-35.545023696682463"/>
+        </scene>
+        <!--Search Location View Controller-->
+        <scene sceneID="Gpy-nW-B77">
+            <objects>
+                <viewController storyboardIdentifier="SearchLocationStoryboardID" id="Fqe-cm-6Gs" customClass="SearchLocationViewController" customModule="WeatherApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="kdW-EX-3En">
+                        <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="w0l-Fc-NBa">
+                                <rect key="frame" x="0.0" y="165" width="390" height="679"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            </view>
+                            <searchBar contentMode="redraw" searchBarStyle="minimal" placeholder="Search for a location" translatesAutoresizingMaskIntoConstraints="NO" id="AOK-sD-s4Q">
+                                <rect key="frame" x="0.0" y="107" width="390" height="56"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <outlet property="delegate" destination="Fqe-cm-6Gs" id="LE2-Qy-A5g"/>
+                                </connections>
+                            </searchBar>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="3MO-Wc-48H">
+                                <rect key="frame" x="0.0" y="163" width="390" height="681"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="Fqe-cm-6Gs" id="t3g-NQ-mUo"/>
+                                    <outlet property="delegate" destination="Fqe-cm-6Gs" id="SEP-O5-aXj"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="l6e-Tl-kcg"/>
+                        <color key="backgroundColor" red="0.70000121992813125" green="0.8046431128747743" blue="0.87618371212121215" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="AOK-sD-s4Q" firstAttribute="leading" secondItem="l6e-Tl-kcg" secondAttribute="leading" id="Blx-tQ-fKx"/>
+                            <constraint firstItem="3MO-Wc-48H" firstAttribute="top" secondItem="AOK-sD-s4Q" secondAttribute="bottom" id="C8Y-KI-52X"/>
+                            <constraint firstItem="3MO-Wc-48H" firstAttribute="trailing" secondItem="l6e-Tl-kcg" secondAttribute="trailing" id="E0B-FB-ydm"/>
+                            <constraint firstAttribute="bottom" secondItem="w0l-Fc-NBa" secondAttribute="bottom" id="Eh6-wO-X0U"/>
+                            <constraint firstItem="w0l-Fc-NBa" firstAttribute="leading" secondItem="l6e-Tl-kcg" secondAttribute="leading" id="TRE-M8-yKJ"/>
+                            <constraint firstItem="AOK-sD-s4Q" firstAttribute="top" secondItem="l6e-Tl-kcg" secondAttribute="top" constant="16" id="X2K-Eg-p1W"/>
+                            <constraint firstItem="w0l-Fc-NBa" firstAttribute="top" secondItem="AOK-sD-s4Q" secondAttribute="bottom" constant="2" id="aVu-kb-UKW"/>
+                            <constraint firstAttribute="bottom" secondItem="3MO-Wc-48H" secondAttribute="bottom" id="fhd-BM-quj"/>
+                            <constraint firstItem="w0l-Fc-NBa" firstAttribute="trailing" secondItem="l6e-Tl-kcg" secondAttribute="trailing" id="hm1-7K-iFo"/>
+                            <constraint firstItem="3MO-Wc-48H" firstAttribute="leading" secondItem="l6e-Tl-kcg" secondAttribute="leading" id="is7-td-El4"/>
+                            <constraint firstItem="AOK-sD-s4Q" firstAttribute="trailing" secondItem="l6e-Tl-kcg" secondAttribute="trailing" id="seV-d0-5WR"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="dbn-5b-iMf"/>
+                    <connections>
+                        <outlet property="SuggestionTableView" destination="3MO-Wc-48H" id="obc-e2-zCp"/>
+                        <outlet property="mapViewController" destination="w0l-Fc-NBa" id="6LJ-qX-vKg"/>
+                        <outlet property="suggestionSearchBar" destination="AOK-sD-s4Q" id="cvD-Pv-6rp"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="SQM-bm-Od7" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1872" y="-38"/>
         </scene>
     </scenes>
     <resources>

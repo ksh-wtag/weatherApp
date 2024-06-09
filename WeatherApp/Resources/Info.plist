@@ -2,8 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Enable location</string>
+	<key>MBXAccessToken</key>
+	<string>pk.eyJ1IjoiLXJhdHVsLSIsImEiOiJjbHdvbnhkbHQybTIwMmttajdmeHEyNXh1In0.m4VC17opYXOoFeRo5jyKXg</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
