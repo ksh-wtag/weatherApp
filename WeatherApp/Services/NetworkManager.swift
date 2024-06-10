@@ -9,7 +9,7 @@ class NetworkManager {
             let url = URL(string: weatherApiAddress)
             let dataTask = URLSession.shared.dataTask(with: url!) { (data, response, error)  in
                 guard let data = data, error == nil else {
-                    print("Error1 : \(error!.localizedDescription)")
+                    print("Error : \(error!.localizedDescription)")
                     completionHandler(nil, error)
                     return
                 }

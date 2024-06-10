@@ -11,10 +11,9 @@ class SearchLocationViewController: UIViewController {
     @IBOutlet weak var mapViewController: UIView!
     
     var suggestedLocation: SuggestedLocation?
-    var suggestNetworkCall = SuggestNewtowrkManager()
+    let suggestNetworkCall = SuggestNewtowrkManager()
     var retriveCoordinates: Retrieve?
-    var retriveNetworkCall = RetriveNetworkManager()
-    
+    let retriveNetworkCall = RetriveNetworkManager()
     weak var delegate: SearchLocationDelegate?
     var mapView: MapView!
     
@@ -77,7 +76,7 @@ extension SearchLocationViewController: UITableViewDelegate, UITableViewDataSour
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return suggestedLocation?.suggestions.count ?? 0
+        return suggestedLocation?.suggestions.count ?? 0 
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -91,5 +90,5 @@ extension SearchLocationViewController: UITableViewDelegate, UITableViewDataSour
     
     func updateTableViewInteraction() {
         SuggestionTableView.isUserInteractionEnabled = true
-        }
+    }
 }
