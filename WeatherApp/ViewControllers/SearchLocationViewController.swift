@@ -10,9 +10,9 @@ class SearchLocationViewController: UIViewController {
     @IBOutlet weak var SuggestionTableView: UITableView!
     @IBOutlet weak var mapViewController: UIView!
     
-    var suggestedLocation: SuggestedLocation?
+    var suggestedLocation: SuggestedLocationModel?
     let suggestNetworkCall = SuggestNewtowrkManager()
-    var retriveCoordinates: Retrieve?
+    var retriveCoordinates: RetrieveModel?
     let retriveNetworkCall = RetriveNetworkManager()
     weak var delegate: SearchLocationDelegate?
     var mapView: MapView!

@@ -5,5 +5,5 @@ struct WeatherInfoData: Codable {
     let main: Main
     let visibility: Int
     let wind: Wind
-    let name: String
+    var name: String
 }

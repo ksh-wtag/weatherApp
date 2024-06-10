@@ -1,5 +1,5 @@
 import Foundation
 
-struct Coordinates: Codable {
+struct CoordinatesModel: Codable {
     let latitude, longitude: Double
 }

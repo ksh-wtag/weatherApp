@@ -1,7 +1,7 @@
 import Foundation
 
 class RetriveNetworkManager {
-    func fetchRetrivedData(mapboxId: String, completionHandler:  @escaping (Retrieve?) -> Void) {
+    func fetchRetrivedData(mapboxId: String, completionHandler:  @escaping (RetrieveModel?) -> Void) {
         DispatchQueue.global(qos: .userInitiated).async {
             let url = URL(string: "https://api.mapbox.com/search/searchbox/v1/retrieve/\(mapboxId)?session_token=&access_token=pk.eyJ1IjoiLXJhdHVsLSIsImEiOiJjbHdvbnhkbHQybTIwMmttajdmeHEyNXh1In0.m4VC17opYXOoFeRo5jyKXg")
             let dataTask = URLSession.shared.dataTask(with: url!) { (data, response, error)  in
@@ -11,8 +11,8 @@ class RetriveNetworkManager {
                     return
                 }
                 do{
-                    let fetchedRetrivedData: Retrieve?
-                    fetchedRetrivedData = try JSONDecoder().decode(Retrieve.self, from: data)
+                    let fetchedRetrivedData: RetrieveModel?
+                    fetchedRetrivedData = try JSONDecoder().decode(RetrieveModel.self, from: data)
                     if let fetchedRetrivedData = fetchedRetrivedData {
                         completionHandler(fetchedRetrivedData)
                     } else {

@@ -1,16 +1,16 @@
 import Foundation
 import CoreLocation
 
-protocol UserLocation {
+protocol UserLocationDelegate {
     func passCurrentLocation(latitude: Double, longitude: Double)
 }
 
 class CurrentLocationManager: NSObject {
     var currentLocationLatitude: Double = 0.0
     var currentLocationLongitude: Double = 0.0
-    let weatherData = WeatherData()
+    let weatherData = WeatherDataViewModel()
     let locationManager = CLLocationManager()
-    var userLocationDelegate: UserLocation?
+    var userLocationDelegate: UserLocationDelegate?
     
     func getCurrentLocation() {
         locationManager.delegate = self

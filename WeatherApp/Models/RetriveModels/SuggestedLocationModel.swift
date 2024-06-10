@@ -1,5 +1,5 @@
 import Foundation
 
-struct SuggestedLocation: Codable {
+struct SuggestedLocationModel : Codable {
     let suggestions: [Suggestion]
 }

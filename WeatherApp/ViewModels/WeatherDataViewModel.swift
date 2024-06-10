@@ -1,17 +1,17 @@
 import Foundation
 
-protocol WeatherDataPassing: AnyObject {
-    func passInfoToView(locationName: String, response: Data)
+protocol WeatherDataDelegate: AnyObject {
+    func passWeatherDataToView(locationName: String, response: Data)
     func passErrorToView(error: Error?)
     func passWeatherInfoData(weatherInfoData: WeatherInfoData?)
 }
 
-class WeatherData {
+class WeatherDataViewModel {
     var weatherInfoData: WeatherInfoData?
     var databaseOperation = DatabaseOperations()
     var weatherDataModel = WeatherDataModel()
-    weak var apiDelegate: WeatherDataPassing?
-    
+    weak var apiDelegate: WeatherDataDelegate?
+
     func fetchWeatherData(latitude: Double, longitude: Double, locationName: String = "") {
         let networkManager  = NetworkManager()
         networkManager.fetchWeatherData(latitude: latitude, longitude: longitude, locationName: locationName, completionHandler: { response, error in
@@ -31,7 +31,7 @@ class WeatherData {
                 let iconData = self.weatherDataModel.descriptionIcon
                 DispatchQueue.main.async {
                     self.apiDelegate?.passErrorToView(error: error)
-                    self.apiDelegate?.passInfoToView(locationName: self.weatherInfoData?.name ?? "", response: iconData)
+                    self.apiDelegate?.passWeatherDataToView(locationName: self.weatherInfoData?.name ?? "", response: iconData)
                 }
             }
         })
@@ -43,7 +43,7 @@ class WeatherData {
             if let weatherInfoData = self.weatherInfoData, let response = response {
                 self.databaseOperation.createRecord(response: weatherInfoData, iconResponse: response)
                 DispatchQueue.main.async {
-                    self.apiDelegate?.passInfoToView(locationName: locationName, response: response)
+                    self.apiDelegate?.passWeatherDataToView(locationName: locationName, response: response)
                 }
             }
         })
