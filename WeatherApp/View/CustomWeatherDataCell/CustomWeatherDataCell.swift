@@ -16,6 +16,7 @@ class CustomWeatherDataCell: UITableViewCell {
     @IBOutlet weak var feelsLike: UILabel!
     @IBOutlet weak var maximumTemperature: UILabel!
     @IBOutlet weak var minimumTemperature: UILabel!
+    @IBOutlet weak var weatherInfoStackView: UIStackView!
     
     
     
@@ -24,3 +25,4 @@ class CustomWeatherDataCell: UITableViewCell {
         selectionStyle = .none
     }
 }
+

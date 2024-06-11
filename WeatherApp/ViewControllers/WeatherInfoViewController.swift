@@ -8,7 +8,6 @@ class WeatherInfoViewController: UIViewController {
     
     @IBOutlet weak var weatherInfoTable: UITableView!
 
-    
     @IBAction func currentLocationButtonTapped(_ sender: UIButton) {
         currentLocationManager.getCurrentLocation()
     }
