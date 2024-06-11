@@ -13,7 +13,7 @@ class WeatherDataViewModel {
     weak var apiDelegate: WeatherDataPassing?
     
     func fetchWeatherData(latitude: Double, longitude: Double, locationName: String = "") {
-        let networkManager  = NetworkManager()
+        let networkManager = NetworkManager()
         networkManager.fetchWeatherData(latitude: latitude, longitude: longitude, locationName: locationName, completionHandler: { response, error in
             if error == nil {
                 self.weatherInfoData = response
