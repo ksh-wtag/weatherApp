@@ -10,15 +10,15 @@ class SearchLocationViewController: UIViewController {
     @IBOutlet weak var SuggestionTableView: UITableView!
     @IBOutlet weak var mapViewController: UIView!
     
-    var suggestedLocation: SuggestedLocation?
-    let suggestNetworkCall = SuggestNewtowrkManager()
-    var retriveCoordinates: Retrieve?
-    let retriveNetworkCall = RetriveNetworkManager()
+    var suggestedLocationViewModel = SearchLocationViewModel()
+    var suggestedLocation: SuggestedLocationModel?
     weak var delegate: SearchLocationDelegate?
     var mapView: MapView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        suggestedLocationViewModel.suggestedLocationDelegate = self
+        suggestedLocationViewModel.retrieveLocationDelegate = self
         registerNibFile()
         SuggestionTableView.isUserInteractionEnabled = false
         setMapAndGestureAction()
@@ -48,35 +48,38 @@ class SearchLocationViewController: UIViewController {
         delegate?.getLocationInformation(latitude: latitude, longitude: longitude, locationName: "")
         navigationController!.popViewController(animated: true)
     }
+    
+    func getSuggestedLocation(response: SuggestedLocationModel) {
+        DispatchQueue.main.async {
+            self.suggestedLocation = response
+            self.SuggestionTableView.reloadData()
+        }
+    }
+    
+    func getRetrievedLocation(latitude: Double, longitude: Double, locationName: String) {
+        self.delegate?.getLocationInformation(latitude: latitude, longitude: longitude, locationName: locationName)
+        DispatchQueue.main.async{
+            self.navigationController?.popViewController(animated: true)
+        }
+    }
 }
 
 extension SearchLocationViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         if searchText.count >= 4 {
-            suggestNetworkCall.fetchLocationSuggetion(searchText: searchText, completionHandler: { response in
-                DispatchQueue.main.async {
-                    self.suggestedLocation = response
-                    self.SuggestionTableView.reloadData()
-                }
-            })
+            suggestedLocationViewModel.getSuggestedLocation(searchText: searchText)
         }
     }
 }
 
 extension SearchLocationViewController: UITableViewDelegate, UITableViewDataSource{
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        retriveNetworkCall.fetchRetrivedData(mapboxId: suggestedLocation?.suggestions[indexPath.row].mapbox_id ?? "", completionHandler: { response in
-            self.retriveCoordinates = response
-            let latitude = self.retriveCoordinates!.features[0].properties.coordinates.latitude
-            let longitude = self.retriveCoordinates!.features[0].properties.coordinates.longitude
-            let locationName = self.retriveCoordinates!.features[0].properties.name
-            self.delegate?.getLocationInformation(latitude: latitude, longitude: longitude, locationName: locationName)
-        })
+        suggestedLocationViewModel.getRetrievedLocation(mapboxId: suggestedLocation?.suggestions[indexPath.row].mapbox_id ?? "")
         navigationController?.popViewController(animated: true)
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return suggestedLocation?.suggestions.count ?? 0 
+        return suggestedLocation?.suggestions.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -90,5 +93,17 @@ extension SearchLocationViewController: UITableViewDelegate, UITableViewDataSour
     
     func updateTableViewInteraction() {
         SuggestionTableView.isUserInteractionEnabled = true
+    }
+}
+
+extension SearchLocationViewController: SuggestedLocationDelegate {
+    func passSuggestedLocation(response: SuggestedLocationModel) {
+        getSuggestedLocation(response: response)
+    }
+}
+
+extension SearchLocationViewController: RetrieveLocationDelegate {
+    func passRetrievedLocation(latitude: Double, longitude: Double, locationName: String){
+        getRetrievedLocation(latitude: latitude, longitude: longitude, locationName: locationName)
     }
 }

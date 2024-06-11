@@ -6,7 +6,7 @@ protocol WeatherDataPassing: AnyObject {
     func passWeatherInfoData(weatherInfoData: WeatherInfoData?)
 }
 
-class WeatherData {
+class WeatherDataViewModel {
     var weatherInfoData: WeatherInfoData?
     var databaseOperation = DatabaseOperations()
     var weatherDataModel = WeatherDataModel()

@@ -1,7 +1,7 @@
 import UIKit
 
 enum NetworkData: Int {
-    case pressure = 0
+    case pressure
     case humidity
     case visibility
     case windSpeed
@@ -10,7 +10,7 @@ enum NetworkData: Int {
 class WeatherInfoViewController: UIViewController {
     var weatherInfoData: WeatherInfoData?
     var currentLocationManager = CurrentLocationManager()
-    let weatherData = WeatherData()
+    let weatherData = WeatherDataViewModel()
     
     @IBOutlet weak var cityName: UILabel!
     @IBOutlet weak var temperatureLabel: UILabel!
@@ -38,7 +38,6 @@ class WeatherInfoViewController: UIViewController {
         weatherData.apiDelegate = self
         currentLocationManager.getCurrentLocation()
         registerCustomWeatherCell()
-        
     }
     
     override func viewDidLayoutSubviews() {
