@@ -1,6 +1,6 @@
 import Foundation
 
-struct ForecastDWeather: Codable {
+struct ForecastWeather: Codable {
     let description: String
     let icon: String
 }

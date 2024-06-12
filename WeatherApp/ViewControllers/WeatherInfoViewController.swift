@@ -2,6 +2,7 @@ import UIKit
 
 class WeatherInfoViewController: UIViewController {
     var weatherInfoData: WeatherInfoData?
+    var forecastData: ForecastModel?
     var currentLocationManager = CurrentLocationManager()
     let weatherData = WeatherDataViewModel()
     var icon = UIImage()
@@ -23,6 +24,7 @@ class WeatherInfoViewController: UIViewController {
         self.weatherInfoTable.separatorStyle = .none
         currentLocationManager.userLocationDelegate = self
         weatherData.apiDelegate = self
+        weatherData.forecastDelegate = self
         currentLocationManager.getCurrentLocation()
         registerCustomWeatherCell()
         
@@ -34,6 +36,9 @@ class WeatherInfoViewController: UIViewController {
         
         let nib2 = UINib(nibName: "WeatherInfoCell", bundle: nil)
         weatherInfoTable.register(nib2, forCellReuseIdentifier: "weatherInfoCell")
+        
+        let nib3 = UINib(nibName: "CustomForecastCell", bundle: nil)
+        weatherInfoTable.register(nib3, forCellReuseIdentifier: "customForecastCell")
     }
     
     func updateWeatherDataInView(locationName: String, response: Data) {
@@ -52,7 +57,7 @@ class WeatherInfoViewController: UIViewController {
 
 extension WeatherInfoViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 2
+        return 3
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -67,7 +72,7 @@ extension WeatherInfoViewController: UITableViewDelegate, UITableViewDataSource 
             cell.maximumTemperature.text = "Max \(Int(weatherInfoData?.main.temp_max ?? 0))ºC"
             cell.minimumTemperature.text = "Min \(Int(weatherInfoData?.main.temp_min ?? 0))ºC"
             return cell
-        } else {
+        } else if indexPath.row < 2 {
             let cell = weatherInfoTable.dequeueReusableCell(withIdentifier: "weatherInfoCell", for: indexPath) as! WeatherInfoCell
             cell.pressureLabel.text = "Pressure"
             cell.pressureValue.text = "\(weatherInfoData?.main.pressure ?? 0) Pa"
@@ -78,20 +83,29 @@ extension WeatherInfoViewController: UITableViewDelegate, UITableViewDataSource 
             cell.windSpeedLabel.text = "Wind Speed"
             cell.windSpeedValue.text = "\(weatherInfoData?.wind.speed ?? 0) km/h"
             return cell
+        } else {
+            let cell = weatherInfoTable.dequeueReusableCell(withIdentifier: "customForecastCell", for: indexPath) as! CustomForecastCell
+            if let forecastData = forecastData {
+                cell.configure(to: forecastData)
+            }
+            return cell
         }
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return UITableView.automaticDimension
+        if indexPath.row < 2 {
+            return UITableView.automaticDimension
+        } else {
+            return 100
+        }
     }
-    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return 500
-    }
+
 }
 
 extension WeatherInfoViewController: UserLocationDelegate {
     func passCurrentLocation(latitude: Double, longitude: Double) {
         weatherData.fetchWeatherData(latitude: latitude, longitude: longitude)
+        weatherData.fetchforecastData(latitude: latitude, longitude: longitude)
     }
 }
 
@@ -101,16 +115,23 @@ extension WeatherInfoViewController: SearchLocationDelegate {
     }
 }
 
-extension WeatherInfoViewController: WeatherDataDelegate {
+extension WeatherInfoViewController: WeatherDataPassing {
     func passWeatherInfoData(weatherInfoData: WeatherInfoData?) {
         self.weatherInfoData = weatherInfoData
     }
     
-    func passWeatherDataToView(locationName: String, response: Data) {
+    func passInfoToView(locationName: String, response: Data) {
         updateWeatherDataInView(locationName: locationName, response: response)
     }
     
     func passErrorToView(error: Error?) {
         showErrorAlert(error: error!)
+    }
+}
+
+extension WeatherInfoViewController: ForecastDelegate {
+    func passForecastedData(response: ForecastModel) {
+        self.forecastData = response
+        print(response.list[0].dt_txt)
     }
 }

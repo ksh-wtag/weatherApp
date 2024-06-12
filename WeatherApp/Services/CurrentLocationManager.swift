@@ -6,11 +6,11 @@ protocol UserLocationDelegate {
 }
 
 class CurrentLocationManager: NSObject {
-    var currentLocationLatitude: Double = 0.0
-    var currentLocationLongitude: Double = 0.0
-    let weatherData = WeatherDataViewModel()
-    let locationManager = CLLocationManager()
-    var userLocationDelegate: UserLocationDelegate?
+    private var currentLocationLatitude: Double = 0.0
+    private var currentLocationLongitude: Double = 0.0
+    private let weatherData = WeatherDataViewModel()
+    private let locationManager = CLLocationManager()
+    internal var userLocationDelegate: UserLocationDelegate?
     
     func getCurrentLocation() {
         locationManager.delegate = self

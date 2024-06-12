@@ -1,6 +1,7 @@
 import Foundation
 
-struct List: Codable {
-    let main: Main
-    let weather: Weather
+struct ForecastList: Codable {
+    let main: ForecastMain
+    let weather: [ForecastWeather]
+    let dt_txt: String
 }

@@ -1,19 +1,25 @@
 import Foundation
 
-protocol WeatherDataDelegate: AnyObject {
-    func passWeatherDataToView(locationName: String, response: Data)
+protocol WeatherDataPassing: AnyObject {
+    func passInfoToView(locationName: String, response: Data)
     func passErrorToView(error: Error?)
     func passWeatherInfoData(weatherInfoData: WeatherInfoData?)
+}
+
+protocol ForecastDelegate: AnyObject {
+    func passForecastedData(response: ForecastModel)
 }
 
 class WeatherDataViewModel {
     var weatherInfoData: WeatherInfoData?
     var databaseOperation = DatabaseOperations()
     var weatherDataModel = WeatherDataModel()
-    weak var apiDelegate: WeatherDataDelegate?
-
+    weak var apiDelegate: WeatherDataPassing?
+    weak var forecastDelegate: ForecastDelegate?
+    var forecastModel: ForecastModel?
+    
     func fetchWeatherData(latitude: Double, longitude: Double, locationName: String = "") {
-        let networkManager  = NetworkManager()
+        let networkManager = NetworkManager()
         networkManager.fetchWeatherData(latitude: latitude, longitude: longitude, locationName: locationName, completionHandler: { response, error in
             if error == nil {
                 self.weatherInfoData = response
@@ -31,9 +37,22 @@ class WeatherDataViewModel {
                 let iconData = self.weatherDataModel.descriptionIcon
                 DispatchQueue.main.async {
                     self.apiDelegate?.passErrorToView(error: error)
-                    self.apiDelegate?.passWeatherDataToView(locationName: self.weatherInfoData?.name ?? "", response: iconData)
+                    self.apiDelegate?.passInfoToView(locationName: self.weatherInfoData?.name ?? "", response: iconData)
                 }
             }
+        })
+    }   
+    
+    func fetchforecastData(latitude: Double, longitude: Double, locationName: String = "") {
+        let forecastNetworkManager = ForecastNetworkManager()
+        forecastNetworkManager.fetchForecastWeatherData(latitude: latitude, longitude: longitude, completionHandler: { data in
+            guard let data = data else {
+                return
+            }
+            self.forecastModel = data
+            self.forecastDelegate?.passForecastedData(response: data)
+            
+            
         })
     }
     
@@ -43,7 +62,7 @@ class WeatherDataViewModel {
             if let weatherInfoData = self.weatherInfoData, let response = response {
                 self.databaseOperation.createRecord(response: weatherInfoData, iconResponse: response)
                 DispatchQueue.main.async {
-                    self.apiDelegate?.passWeatherDataToView(locationName: locationName, response: response)
+                    self.apiDelegate?.passInfoToView(locationName: locationName, response: response)
                 }
             }
         })

@@ -25,7 +25,9 @@
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="02O-TK-rh3">
                                         <rect key="frame" x="0.0" y="0.0" width="159" height="40.333333333333336"/>
                                         <state key="normal" title="Button"/>
-                                        <buttonConfiguration key="configuration" style="filled" title="Current location" cornerStyle="capsule"/>
+                                        <buttonConfiguration key="configuration" style="gray" title="Current location" cornerStyle="capsule">
+                                            <color key="baseForegroundColor" systemColor="labelColor"/>
+                                        </buttonConfiguration>
                                         <connections>
                                             <action selector="currentLocationButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="9ET-bA-KMO"/>
                                         </connections>
@@ -33,7 +35,9 @@
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pMp-ia-5ay">
                                         <rect key="frame" x="181" y="0.0" width="159" height="40.333333333333336"/>
                                         <state key="normal" title="Button"/>
-                                        <buttonConfiguration key="configuration" style="filled" title="Search location" cornerStyle="capsule"/>
+                                        <buttonConfiguration key="configuration" style="gray" title="Search location" cornerStyle="capsule">
+                                            <color key="baseForegroundColor" systemColor="labelColor"/>
+                                        </buttonConfiguration>
                                         <connections>
                                             <action selector="searchLocationButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="WA5-lY-xzk"/>
                                         </connections>
@@ -154,6 +158,9 @@
         </scene>
     </scenes>
     <resources>
+        <systemColor name="labelColor">
+            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
