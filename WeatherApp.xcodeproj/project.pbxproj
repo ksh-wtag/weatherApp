@@ -22,7 +22,7 @@
 		E752CAA42C198FCD004A7E3C /* ForecastCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E752CAA22C198FCD004A7E3C /* ForecastCollectionViewCell.swift */; };
 		E752CAA52C198FCD004A7E3C /* ForecastCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E752CAA32C198FCD004A7E3C /* ForecastCollectionViewCell.xib */; };
 		E752E5D12BEA566200958B34 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E752E5D02BEA566200958B34 /* NetworkManager.swift */; };
-		E7557F502C08557C00F43026 /* SuggestNewtowrkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7557F4F2C08557C00F43026 /* SuggestNewtowrkManager.swift */; };
+		E7557F502C08557C00F43026 /* SuggestNetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7557F4F2C08557C00F43026 /* SuggestNetworkManager.swift */; };
 		E7557F5A2C0859EB00F43026 /* SuggestionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7557F582C0859EB00F43026 /* SuggestionTableViewCell.swift */; };
 		E7557F5B2C0859EB00F43026 /* SuggestionTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E7557F592C0859EB00F43026 /* SuggestionTableViewCell.xib */; };
 		E7557F5D2C08835600F43026 /* CoordinatesModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7557F5C2C08835600F43026 /* CoordinatesModel.swift */; };
@@ -73,7 +73,7 @@
 		E752CAA22C198FCD004A7E3C /* ForecastCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForecastCollectionViewCell.swift; sourceTree = "<group>"; };
 		E752CAA32C198FCD004A7E3C /* ForecastCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ForecastCollectionViewCell.xib; sourceTree = "<group>"; };
 		E752E5D02BEA566200958B34 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
-		E7557F4F2C08557C00F43026 /* SuggestNewtowrkManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SuggestNewtowrkManager.swift; path = ../../../MapboxCustomSearch/MapboxCustomSearch/SuggestNewtowrkManager.swift; sourceTree = "<group>"; };
+		E7557F4F2C08557C00F43026 /* SuggestNetworkManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SuggestNetworkManager.swift; path = ../../../MapboxCustomSearch/MapboxCustomSearch/SuggestNetworkManager.swift; sourceTree = "<group>"; };
 		E7557F582C0859EB00F43026 /* SuggestionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SuggestionTableViewCell.swift; path = WeatherApp/View/CustomSuggestionCell/SuggestionTableViewCell.swift; sourceTree = SOURCE_ROOT; };
 		E7557F592C0859EB00F43026 /* SuggestionTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = SuggestionTableViewCell.xib; path = WeatherApp/View/CustomSuggestionCell/SuggestionTableViewCell.xib; sourceTree = SOURCE_ROOT; };
 		E7557F5C2C08835600F43026 /* CoordinatesModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoordinatesModel.swift; sourceTree = "<group>"; };
@@ -352,7 +352,7 @@
 			children = (
 				E752E5D02BEA566200958B34 /* NetworkManager.swift */,
 				E75171C72C031A7B00BC81C4 /* NetworkIconManager.swift */,
-				E7557F4F2C08557C00F43026 /* SuggestNewtowrkManager.swift */,
+				E7557F4F2C08557C00F43026 /* SuggestNetworkManager.swift */,
 				E7557F642C08845900F43026 /* RetrieveNetworkManager.swift */,
 				E70BF3152C0DEE2100D364A7 /* DatabbaseOperations.swift */,
 				E75F05182C16B2B700ED9CA8 /* CurrentLocationManager.swift */,
@@ -506,7 +506,7 @@
 				E752CA992C196F6E004A7E3C /* ForecastNetworkManager.swift in Sources */,
 				E7900F1E2BECBF52003FD19A /* WeatherInfoCell.swift in Sources */,
 				E752CAA42C198FCD004A7E3C /* ForecastCollectionViewCell.swift in Sources */,
-				E7557F502C08557C00F43026 /* SuggestNewtowrkManager.swift in Sources */,
+				E7557F502C08557C00F43026 /* SuggestNetworkManager.swift in Sources */,
 				E7557F5F2C08837900F43026 /* PropertiesModel.swift in Sources */,
 				E7557F5D2C08835600F43026 /* CoordinatesModel.swift in Sources */,
 				E78D536F2BF6020B00F01530 /* CityModel.swift in Sources */,

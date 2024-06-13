@@ -10,7 +10,7 @@ protocol RetrieveLocationDelegate: AnyObject {
 
 class SearchLocationViewModel {
     weak var suggestedLocationDelegate: SuggestedLocationDelegate?
-    let suggestionNewtowrkManager = SuggestNewtowrkManager()
+    let suggestionNewtowrkManager = SuggestNetworkManager()
     weak var retrieveLocationDelegate: RetrieveLocationDelegate?
     let retrieveNetworkManager = RetrieveNetworkManager()
     
