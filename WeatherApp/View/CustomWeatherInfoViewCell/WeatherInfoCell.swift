@@ -15,4 +15,5 @@ class WeatherInfoCell: UITableViewCell {
         super.awakeFromNib()
         selectionStyle = .none
     }
+
 }

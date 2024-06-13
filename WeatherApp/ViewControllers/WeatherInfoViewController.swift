@@ -5,6 +5,7 @@ class WeatherInfoViewController: UIViewController {
     var forecastData: ForecastModel?
     var currentLocationManager = CurrentLocationManager()
     let weatherData = WeatherDataViewModel()
+    var forecastIcons = ForecastIcon()
     var icon = UIImage()
     
     @IBOutlet weak var weatherInfoTable: UITableView!
@@ -25,6 +26,7 @@ class WeatherInfoViewController: UIViewController {
         currentLocationManager.userLocationDelegate = self
         weatherData.apiDelegate = self
         weatherData.forecastDelegate = self
+        weatherData.forecastIconDelegate = self
         currentLocationManager.getCurrentLocation()
         registerCustomWeatherCell()
         
@@ -39,6 +41,9 @@ class WeatherInfoViewController: UIViewController {
         
         let nib3 = UINib(nibName: "CustomForecastCell", bundle: nil)
         weatherInfoTable.register(nib3, forCellReuseIdentifier: "customForecastCell")
+
+        let nib4 = UINib(nibName: "CustomDayForecastCellTableViewCell", bundle: nil)
+        weatherInfoTable.register(nib4, forCellReuseIdentifier: "customDayForecastCellTableViewCell")
     }
     
     func updateWeatherDataInView(locationName: String, response: Data) {
@@ -57,11 +62,11 @@ class WeatherInfoViewController: UIViewController {
 
 extension WeatherInfoViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 3
+        return 7
     }
-    
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
+
         if indexPath.row < 1 {
             let cell = weatherInfoTable.dequeueReusableCell(withIdentifier: "customWeatherDataCell", for: indexPath) as! CustomWeatherDataCell
             cell.CityName.text = "📍\(weatherInfoData?.name ?? "")"
@@ -71,6 +76,13 @@ extension WeatherInfoViewController: UITableViewDelegate, UITableViewDataSource 
             cell.feelsLike.text = "Feels Like \(Int(weatherInfoData?.main.feels_like ?? 0))ºC"
             cell.maximumTemperature.text = "Max \(Int(weatherInfoData?.main.temp_max ?? 0))ºC"
             cell.minimumTemperature.text = "Min \(Int(weatherInfoData?.main.temp_min ?? 0))ºC"
+            
+            cell.backgroundColor = UIColor.black
+            cell.layer.borderColor = UIColor.black.cgColor
+            cell.layer.borderWidth = 1
+            cell.layer.cornerRadius = 20
+            cell.clipsToBounds = true
+            
             return cell
         } else if indexPath.row < 2 {
             let cell = weatherInfoTable.dequeueReusableCell(withIdentifier: "weatherInfoCell", for: indexPath) as! WeatherInfoCell
@@ -83,17 +95,28 @@ extension WeatherInfoViewController: UITableViewDelegate, UITableViewDataSource 
             cell.windSpeedLabel.text = "Wind Speed"
             cell.windSpeedValue.text = "\(weatherInfoData?.wind.speed ?? 0) km/h"
             return cell
-        } else {
+        } else if indexPath.row < 3{
             let cell = weatherInfoTable.dequeueReusableCell(withIdentifier: "customForecastCell", for: indexPath) as! CustomForecastCell
             if let forecastData = forecastData {
-                cell.configure(to: forecastData)
+                cell.configure(to: forecastData, icons: forecastIcons.forecastIcons)
+            }
+            return cell
+        }else {
+            let cell = weatherInfoTable.dequeueReusableCell(withIdentifier: "customDayForecastCellTableViewCell", for: indexPath) as! CustomDayForecastCellTableViewCell
+            if let forecastData = forecastData {
+                let forecastDate = forecastData.list[8 * (indexPath.row - 2)].dt_txt
+                let start = forecastDate.index(forecastDate.startIndex, offsetBy: 8)
+                let end = forecastDate.index(forecastDate.startIndex, offsetBy: 9)
+                cell.upcomingDays.text = "\(forecastDate[start...end])"
+                cell.UpcomingTemperature.text = "\(Int(forecastData.list[8 * (indexPath.row - 2)].main.temp))ºC"
+                
             }
             return cell
         }
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if indexPath.row < 2 {
+        if indexPath.row != 2 {
             return UITableView.automaticDimension
         } else {
             return 100
@@ -132,6 +155,11 @@ extension WeatherInfoViewController: WeatherDataPassing {
 extension WeatherInfoViewController: ForecastDelegate {
     func passForecastedData(response: ForecastModel) {
         self.forecastData = response
-        print(response.list[0].dt_txt)
+    }
+}
+
+extension WeatherInfoViewController: ForecastIconDelegate {
+    func passForecastedIcon(response: [Data]) {
+        forecastIcons.forecastIcons = response
     }
 }

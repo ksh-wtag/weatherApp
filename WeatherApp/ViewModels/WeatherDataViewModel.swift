@@ -10,13 +10,19 @@ protocol ForecastDelegate: AnyObject {
     func passForecastedData(response: ForecastModel)
 }
 
+protocol ForecastIconDelegate: AnyObject {
+    func passForecastedIcon(response: [Data])
+}
+
 class WeatherDataViewModel {
     var weatherInfoData: WeatherInfoData?
     var databaseOperation = DatabaseOperations()
     var weatherDataModel = WeatherDataModel()
     weak var apiDelegate: WeatherDataPassing?
     weak var forecastDelegate: ForecastDelegate?
+    weak var forecastIconDelegate: ForecastIconDelegate?
     var forecastModel: ForecastModel?
+    var forecastIcon = ForecastIcon()
     
     func fetchWeatherData(latitude: Double, longitude: Double, locationName: String = "") {
         let networkManager = NetworkManager()
@@ -50,8 +56,21 @@ class WeatherDataViewModel {
                 return
             }
             self.forecastModel = data
+//            
+//            for i in 0...8 {
+//                self.fetchForecastIcon(icon: self.forecastModel?.list[i].weather[0].icon ?? "")
+//            }
+//            self.forecastIconDelegate?.passForecastedIcon(response: self.forecastIcon.forecastIcons)
             self.forecastDelegate?.passForecastedData(response: data)
             
+        })
+    }
+    
+    func fetchForecastIcon(icon: String) {
+        let networkIconManager = NetworkIconManager()
+        networkIconManager.fetchWeatherDescriptionIcon(icon: icon, completionHandler: { response in
+            
+            self.forecastIcon.forecastIcons.append(response!)
             
         })
     }

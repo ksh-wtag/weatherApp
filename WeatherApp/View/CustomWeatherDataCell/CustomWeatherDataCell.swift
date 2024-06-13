@@ -17,12 +17,11 @@ class CustomWeatherDataCell: UITableViewCell {
     @IBOutlet weak var maximumTemperature: UILabel!
     @IBOutlet weak var minimumTemperature: UILabel!
     @IBOutlet weak var weatherInfoStackView: UIStackView!
-    
-    
-    
+
     override func awakeFromNib() {
         super.awakeFromNib()
         selectionStyle = .none
     }
+    
 }
 

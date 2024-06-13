@@ -9,8 +9,11 @@
 /* Begin PBXBuildFile section */
 		D27F79F61D486F0EEC4CDA2A /* Pods_WeatherApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 265E1D611C673FAFE6F41238 /* Pods_WeatherApp.framework */; };
 		E70BF3142C0DEAC000D364A7 /* WeatherDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E70BF3132C0DEAC000D364A7 /* WeatherDataModel.swift */; };
-		E70BF3162C0DEE2100D364A7 /* DatabbaseOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = E70BF3152C0DEE2100D364A7 /* DatabbaseOperations.swift */; };
+		E70BF3162C0DEE2100D364A7 /* DatabaseOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = E70BF3152C0DEE2100D364A7 /* DatabaseOperations.swift */; };
 		E74E6A392C1AABE60092154F /* SuggestNetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E74E6A382C1AABE60092154F /* SuggestNetworkManager.swift */; };
+		E74E6A3D2C1AB4B70092154F /* CustomDayForecastCellTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E74E6A3C2C1AB4B70092154F /* CustomDayForecastCellTableViewCell.xib */; };
+		E74E6A3E2C1AB4B70092154F /* CustomDayForecastCellTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E74E6A3B2C1AB4B70092154F /* CustomDayForecastCellTableViewCell.swift */; };
+		E74E6A412C1AE48F0092154F /* ForecastIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = E74E6A402C1AE48F0092154F /* ForecastIcon.swift */; };
 		E75171C62C0312DF00BC81C4 /* WeatherInfoAddressModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E75171C52C0312DF00BC81C4 /* WeatherInfoAddressModel.swift */; };
 		E75171C82C031A7B00BC81C4 /* NetworkIconManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E75171C72C031A7B00BC81C4 /* NetworkIconManager.swift */; };
 		E752CA912C196C8E004A7E3C /* ForecastModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E752CA902C196C8E004A7E3C /* ForecastModel.swift */; };
@@ -60,8 +63,11 @@
 		9EED939DD977A2A02B260DF7 /* Pods-WeatherApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WeatherApp.release.xcconfig"; path = "Target Support Files/Pods-WeatherApp/Pods-WeatherApp.release.xcconfig"; sourceTree = "<group>"; };
 		CE589539E7941DECE2BE5DD2 /* Pods-WeatherApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WeatherApp.debug.xcconfig"; path = "Target Support Files/Pods-WeatherApp/Pods-WeatherApp.debug.xcconfig"; sourceTree = "<group>"; };
 		E70BF3132C0DEAC000D364A7 /* WeatherDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherDataModel.swift; sourceTree = "<group>"; };
-		E70BF3152C0DEE2100D364A7 /* DatabbaseOperations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabbaseOperations.swift; sourceTree = "<group>"; };
+		E70BF3152C0DEE2100D364A7 /* DatabaseOperations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseOperations.swift; sourceTree = "<group>"; };
 		E74E6A382C1AABE60092154F /* SuggestNetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestNetworkManager.swift; sourceTree = "<group>"; };
+		E74E6A3B2C1AB4B70092154F /* CustomDayForecastCellTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDayForecastCellTableViewCell.swift; sourceTree = "<group>"; };
+		E74E6A3C2C1AB4B70092154F /* CustomDayForecastCellTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CustomDayForecastCellTableViewCell.xib; sourceTree = "<group>"; };
+		E74E6A402C1AE48F0092154F /* ForecastIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForecastIcon.swift; sourceTree = "<group>"; };
 		E75171C52C0312DF00BC81C4 /* WeatherInfoAddressModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherInfoAddressModel.swift; sourceTree = "<group>"; };
 		E75171C72C031A7B00BC81C4 /* NetworkIconManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkIconManager.swift; sourceTree = "<group>"; };
 		E752CA902C196C8E004A7E3C /* ForecastModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForecastModel.swift; sourceTree = "<group>"; };
@@ -176,6 +182,7 @@
 		E73FBDC72BEB3D910035CB6F /* View */ = {
 			isa = PBXGroup;
 			children = (
+				E74E6A3A2C1AB4850092154F /* CustomDayForecastCell */,
 				E752CA9C2C198AE5004A7E3C /* CustomForecastCell */,
 				E75F051A2C170A4400ED9CA8 /* CustomWeatherDataCell */,
 				E7557F552C0855B900F43026 /* CustomSuggestionCell */,
@@ -192,6 +199,23 @@
 				E75AD09A2BE89DE200D940C8 /* Info.plist */,
 			);
 			path = Resources;
+			sourceTree = "<group>";
+		};
+		E74E6A3A2C1AB4850092154F /* CustomDayForecastCell */ = {
+			isa = PBXGroup;
+			children = (
+				E74E6A3B2C1AB4B70092154F /* CustomDayForecastCellTableViewCell.swift */,
+				E74E6A3C2C1AB4B70092154F /* CustomDayForecastCellTableViewCell.xib */,
+			);
+			path = CustomDayForecastCell;
+			sourceTree = "<group>";
+		};
+		E74E6A3F2C1AE4770092154F /* ForecastIcon */ = {
+			isa = PBXGroup;
+			children = (
+				E74E6A402C1AE48F0092154F /* ForecastIcon.swift */,
+			);
+			path = ForecastIcon;
 			sourceTree = "<group>";
 		};
 		E752CA8F2C196C67004A7E3C /* ForecastModel */ = {
@@ -337,6 +361,7 @@
 		E7900F202BECE3F8003FD19A /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				E74E6A3F2C1AE4770092154F /* ForecastIcon */,
 				E752CA8F2C196C67004A7E3C /* ForecastModel */,
 				E70BF3122C0DEA9800D364A7 /* DabaseModels */,
 				E7557F6B2C089D8200F43026 /* WeatherInfoModels */,
@@ -353,7 +378,7 @@
 				E752E5D02BEA566200958B34 /* NetworkManager.swift */,
 				E75171C72C031A7B00BC81C4 /* NetworkIconManager.swift */,
 				E7557F642C08845900F43026 /* RetrieveNetworkManager.swift */,
-				E70BF3152C0DEE2100D364A7 /* DatabbaseOperations.swift */,
+				E70BF3152C0DEE2100D364A7 /* DatabaseOperations.swift */,
 				E75F05182C16B2B700ED9CA8 /* CurrentLocationManager.swift */,
 				E752CA982C196F6E004A7E3C /* ForecastNetworkManager.swift */,
 				E74E6A382C1AABE60092154F /* SuggestNetworkManager.swift */,
@@ -436,6 +461,7 @@
 				E75F051D2C170A7A00ED9CA8 /* CustomWeatherDataCell.xib in Resources */,
 				E752CAA52C198FCD004A7E3C /* ForecastCollectionViewCell.xib in Resources */,
 				E75AD0962BE89DE200D940C8 /* Assets.xcassets in Resources */,
+				E74E6A3D2C1AB4B70092154F /* CustomDayForecastCellTableViewCell.xib in Resources */,
 				E7557F5B2C0859EB00F43026 /* SuggestionTableViewCell.xib in Resources */,
 				E75AD0992BE89DE200D940C8 /* Base in Resources */,
 				E75AD0942BE89DE000D940C8 /* Base in Resources */,
@@ -496,7 +522,7 @@
 				E75AD0A32BE8A57B00D940C8 /* WeatherInfoData.swift in Sources */,
 				E7557F652C08845900F43026 /* RetrieveNetworkManager.swift in Sources */,
 				E75AD0912BE89DE000D940C8 /* WeatherInfoViewController.swift in Sources */,
-				E70BF3162C0DEE2100D364A7 /* DatabbaseOperations.swift in Sources */,
+				E70BF3162C0DEE2100D364A7 /* DatabaseOperations.swift in Sources */,
 				E75C65152C1878F6004AC85A /* SearchLocationViewModel.swift in Sources */,
 				E75F05192C16B2B700ED9CA8 /* CurrentLocationManager.swift in Sources */,
 				E75171C62C0312DF00BC81C4 /* WeatherInfoAddressModel.swift in Sources */,
@@ -508,10 +534,12 @@
 				E752CAA42C198FCD004A7E3C /* ForecastCollectionViewCell.swift in Sources */,
 				E7557F5F2C08837900F43026 /* PropertiesModel.swift in Sources */,
 				E7557F5D2C08835600F43026 /* CoordinatesModel.swift in Sources */,
+				E74E6A412C1AE48F0092154F /* ForecastIcon.swift in Sources */,
 				E78D536F2BF6020B00F01530 /* CityModel.swift in Sources */,
 				E75AD08D2BE89DE000D940C8 /* AppDelegate.swift in Sources */,
 				E7557F5A2C0859EB00F43026 /* SuggestionTableViewCell.swift in Sources */,
 				E74E6A392C1AABE60092154F /* SuggestNetworkManager.swift in Sources */,
+				E74E6A3E2C1AB4B70092154F /* CustomDayForecastCellTableViewCell.swift in Sources */,
 				E7557F6E2C089EF600F43026 /* SuggestedLocationModel.swift in Sources */,
 				E752CA972C196E8C004A7E3C /* ForecastWeather.swift in Sources */,
 				E752E5D12BEA566200958B34 /* NetworkManager.swift in Sources */,
