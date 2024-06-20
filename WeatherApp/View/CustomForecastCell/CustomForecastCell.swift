@@ -8,8 +8,7 @@
 import UIKit
 
 class CustomForecastCell: UITableViewCell {
-
-
+    
     @IBOutlet weak var forecastCollectionView: UICollectionView!
     
     let weatherData = WeatherDataViewModel()
@@ -18,6 +17,7 @@ class CustomForecastCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        selectionStyle = .none
         forecastCollectionView.register(UINib(nibName: "ForecastCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "forecastCollectionViewCell")
         forecastCollectionView.dataSource = self
         forecastCollectionView.delegate = self
@@ -26,7 +26,6 @@ class CustomForecastCell: UITableViewCell {
     func configure(to data: ForecastModel, icons: [Data]) {
         DispatchQueue.main.async {
             self.forecastData = data
-//            self.forecastIcons.forecastIcons = icons
             self.forecastCollectionView.reloadData()
         }
     }
@@ -40,36 +39,19 @@ extension CustomForecastCell: UICollectionViewDelegate, UICollectionViewDataSour
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = forecastCollectionView.dequeueReusableCell(withReuseIdentifier: "forecastCollectionViewCell", for: indexPath) as! ForecastCollectionViewCell
         
-//        cell.backgroundColor = UIColor.clear
-//        cell.contentView.layer.cornerRadius = 50.0
-//        cell.contentView.layer.borderWidth = 100.0
-//        cell.contentView.layer.borderColor = UIColor.black.cgColor
-//        cell.contentView.layer.masksToBounds = false
-//        cell.backgroundColor = .black
-        
-        
-        let date = Date()
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "dd"
-        let currentDate = dateFormatter.string(from: date)
-        
         if let forecastData = forecastData {
             let forecastDate = forecastData.list[indexPath.row].dt_txt
-            let start = forecastDate.index(forecastDate.startIndex, offsetBy: 8)
-            let end = forecastDate.index(forecastDate.startIndex, offsetBy: 9)
-            if currentDate == forecastDate[start...end] {
-                cell.day.text = "today"
-            }else {
-                cell.day.text = "tommorow"
-            }
-   
-                cell.forecastIcon?.loadNetworkImage(url: "https://openweathermap.org/img/wn/\(forecastData.list[indexPath.row].weather[0].icon)@2x.png")
-                cell.forecastTemperature.text = "\(Int(forecastData.list[indexPath.row].main.temp))ºC"
-                cell.forecastMaxMinTemp.text = "\(Int(forecastData.list[indexPath.row].main.temp_min))ºC/\(Int(forecastData.list[indexPath.row].main.temp_max)) ºC"
+            let start = forecastDate.index(forecastDate.startIndex, offsetBy: 11)
+            let end = forecastDate.index(forecastDate.startIndex, offsetBy: 16)
+            cell.time.text = String(forecastDate[start..<end])
+            cell.forecastIcon?.loadNetworkImage(url: "https://openweathermap.org/img/wn/\(forecastData.list[indexPath.row].weather[0].icon)@2x.png")
+            cell.forecastDescription.text = forecastData.list[indexPath.row].weather[0].description
+            cell.forecastTemperature.text = "\(Int(forecastData.list[indexPath.row].main.temp))ºC"
             
         }
-        cell.layer.backgroundColor = UIColor.black.cgColor
-        cell.layer.borderColor = UIColor.lightGray.cgColor
+        cell.layer.backgroundColor = UIColor.separator.cgColor
+        cell.layer.borderColor = UIColor.black.cgColor
+        cell.layer.cornerRadius = 10.0
         cell.layer.borderWidth = 1
         
         return cell
@@ -90,5 +72,4 @@ extension UIImageView {
         }
     }
 }
-
 

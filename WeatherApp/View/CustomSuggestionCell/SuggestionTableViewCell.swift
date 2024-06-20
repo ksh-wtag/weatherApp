@@ -5,6 +5,7 @@ class SuggestionTableViewCell: UITableViewCell {
     @IBOutlet weak var suggestionLabel: UILabel!
     override func awakeFromNib() {
         super.awakeFromNib()
+        selectionStyle = .none
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

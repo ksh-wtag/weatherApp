@@ -1,10 +1,3 @@
-//
-//  CustomDayForecastCellTableViewCell.swift
-//  WeatherApp
-//
-//  Created by Kazi Shakawat Hossain Ratul on 13/6/24.
-//
-
 import UIKit
 
 class CustomDayForecastCellTableViewCell: UITableViewCell {
@@ -15,12 +8,10 @@ class CustomDayForecastCellTableViewCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        selectionStyle = .none
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
     }
-    
 }

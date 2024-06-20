@@ -1,8 +1,8 @@
-//
-//  ForecastDatabaseModel.swift
-//  WeatherApp
-//
-//  Created by Kazi Shakawat Hossain Ratul on 20/6/24.
-//
-
 import Foundation
+import RealmSwift
+
+class ForecastDatabaseModel: Object {
+    @Persisted var ForecastedDays = List<String>()
+    @Persisted var ForecastedTemperatures = List<Int>()
+    @Persisted var ForecastedIcons = List<Data>()
+}

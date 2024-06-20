@@ -9,7 +9,7 @@ class WeatherInfoViewController: UIViewController {
     var icon = UIImage()
     
     @IBOutlet weak var weatherInfoTable: UITableView!
-
+    
     @IBAction func currentLocationButtonTapped(_ sender: UIButton) {
         currentLocationManager.getCurrentLocation()
     }
@@ -41,16 +41,18 @@ class WeatherInfoViewController: UIViewController {
         
         let nib3 = UINib(nibName: "CustomForecastCell", bundle: nil)
         weatherInfoTable.register(nib3, forCellReuseIdentifier: "customForecastCell")
-
+        
         let nib4 = UINib(nibName: "CustomDayForecastCellTableViewCell", bundle: nil)
         weatherInfoTable.register(nib4, forCellReuseIdentifier: "customDayForecastCellTableViewCell")
     }
     
     func updateWeatherDataInView(locationName: String, response: Data) {
-        icon = UIImage(data: response)!
-        view.layoutIfNeeded()
-        weatherInfoData?.name = locationName
-        weatherInfoTable.reloadData()
+        DispatchQueue.main.async { [self] in
+            icon = UIImage(data: response)!
+            view.layoutIfNeeded()
+            weatherInfoData?.name = locationName
+            weatherInfoTable.reloadData()
+        }
     }
     
     func showErrorAlert(error: Error) {
@@ -58,16 +60,31 @@ class WeatherInfoViewController: UIViewController {
         alert.addAction(UIAlertAction(title: "Dismiss", style: .cancel))
         present(alert, animated: true)
     }
+    
+    func getDayNameFromStringDate(_ dateString: String, format: String) -> String? {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = format
+        
+        if let date = dateFormatter.date(from: dateString) {
+            let calendar = Calendar.current
+            let dayOfWeek = calendar.component(.weekday, from: date)
+            let dayName = dateFormatter.weekdaySymbols[dayOfWeek - 1]
+            return dayName
+        } else {
+            return nil
+        }
+    }
 }
 
 extension WeatherInfoViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 7
     }
-
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-
-        if indexPath.row < 1 {
+        
+        switch indexPath.row {
+        case 0 :
             let cell = weatherInfoTable.dequeueReusableCell(withIdentifier: "customWeatherDataCell", for: indexPath) as! CustomWeatherDataCell
             cell.CityName.text = "📍\(weatherInfoData?.name ?? "")"
             cell.weatherDescription.text = weatherInfoData?.weather[0].description
@@ -84,7 +101,7 @@ extension WeatherInfoViewController: UITableViewDelegate, UITableViewDataSource 
             cell.clipsToBounds = true
             
             return cell
-        } else if indexPath.row < 2 {
+        case 1:
             let cell = weatherInfoTable.dequeueReusableCell(withIdentifier: "weatherInfoCell", for: indexPath) as! WeatherInfoCell
             cell.pressureLabel.text = "Pressure"
             cell.pressureValue.text = "\(weatherInfoData?.main.pressure ?? 0) Pa"
@@ -95,21 +112,22 @@ extension WeatherInfoViewController: UITableViewDelegate, UITableViewDataSource 
             cell.windSpeedLabel.text = "Wind Speed"
             cell.windSpeedValue.text = "\(weatherInfoData?.wind.speed ?? 0) km/h"
             return cell
-        } else if indexPath.row < 3{
+        case 2:
             let cell = weatherInfoTable.dequeueReusableCell(withIdentifier: "customForecastCell", for: indexPath) as! CustomForecastCell
             if let forecastData = forecastData {
                 cell.configure(to: forecastData, icons: forecastIcons.forecastIcons)
             }
             return cell
-        }else {
+        default:
             let cell = weatherInfoTable.dequeueReusableCell(withIdentifier: "customDayForecastCellTableViewCell", for: indexPath) as! CustomDayForecastCellTableViewCell
             if let forecastData = forecastData {
-                let forecastDate = forecastData.list[8 * (indexPath.row - 2)].dt_txt
+                let forecastDate = forecastData.list[8 * (indexPath.row - 3)].dt_txt
                 let start = forecastDate.index(forecastDate.startIndex, offsetBy: 8)
                 let end = forecastDate.index(forecastDate.startIndex, offsetBy: 9)
-                cell.upcomingDays.text = "\(forecastDate[start...end])"
-                cell.UpcomingTemperature.text = "\(Int(forecastData.list[8 * (indexPath.row - 2)].main.temp))ºC"
-                
+                let days = getDayNameFromStringDate(String(forecastDate[start...end]), format: "dd")
+                cell.upcomingDays.text = days
+                cell.upcomingDescriptionIcon.image = UIImage(data: forecastIcons.forecastIcons[indexPath.row - 3])
+                cell.UpcomingTemperature.text = "\(Int(forecastData.list[8 * (indexPath.row - 3)].main.temp))ºC"
             }
             return cell
         }
@@ -117,12 +135,11 @@ extension WeatherInfoViewController: UITableViewDelegate, UITableViewDataSource 
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if indexPath.row != 2 {
-            return UITableView.automaticDimension
+            UITableView.automaticDimension
         } else {
-            return 100
+            130
         }
     }
-
 }
 
 extension WeatherInfoViewController: UserLocationDelegate {
@@ -135,6 +152,7 @@ extension WeatherInfoViewController: UserLocationDelegate {
 extension WeatherInfoViewController: SearchLocationDelegate {
     func getLocationInformation(latitude: Double, longitude: Double, locationName: String) {
         weatherData.fetchWeatherData(latitude: latitude, longitude: longitude,locationName: locationName)
+        weatherData.fetchforecastData(latitude: latitude, longitude: longitude)
     }
 }
 
@@ -155,11 +173,17 @@ extension WeatherInfoViewController: WeatherDataPassing {
 extension WeatherInfoViewController: ForecastDelegate {
     func passForecastedData(response: ForecastModel) {
         self.forecastData = response
+        DispatchQueue.main.async {
+            self.weatherInfoTable.reloadData()
+        }
     }
 }
 
 extension WeatherInfoViewController: ForecastIconDelegate {
     func passForecastedIcon(response: [Data]) {
         forecastIcons.forecastIcons = response
+        DispatchQueue.main.async {
+            self.weatherInfoTable.reloadData()
+        }
     }
 }

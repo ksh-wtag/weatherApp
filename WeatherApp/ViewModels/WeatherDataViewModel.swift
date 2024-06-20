@@ -41,13 +41,12 @@ class WeatherDataViewModel {
                 }
                 self.useDataInDatabase()
                 let iconData = self.weatherDataModel.descriptionIcon
-                DispatchQueue.main.async {
-                    self.apiDelegate?.passErrorToView(error: error)
-                    self.apiDelegate?.passInfoToView(locationName: self.weatherInfoData?.name ?? "", response: iconData)
-                }
+                
+                self.apiDelegate?.passErrorToView(error: error)
+                self.apiDelegate?.passInfoToView(locationName: self.weatherInfoData?.name ?? "", response: iconData)
             }
         })
-    }   
+    }
     
     func fetchforecastData(latitude: Double, longitude: Double, locationName: String = "") {
         let forecastNetworkManager = ForecastNetworkManager()
@@ -56,22 +55,22 @@ class WeatherDataViewModel {
                 return
             }
             self.forecastModel = data
-//            
-//            for i in 0...8 {
-//                self.fetchForecastIcon(icon: self.forecastModel?.list[i].weather[0].icon ?? "")
-//            }
-//            self.forecastIconDelegate?.passForecastedIcon(response: self.forecastIcon.forecastIcons)
+            self.forecastIcon.forecastIcons.removeAll()
+            for i in 1...4 {
+                self.fetchForecastIcon(icon: self.forecastModel?.list[i * 8].weather[0].icon ?? "")
+            }
             self.forecastDelegate?.passForecastedData(response: data)
-            
         })
     }
     
     func fetchForecastIcon(icon: String) {
         let networkIconManager = NetworkIconManager()
         networkIconManager.fetchWeatherDescriptionIcon(icon: icon, completionHandler: { response in
-            
             self.forecastIcon.forecastIcons.append(response!)
-            
+            if self.forecastIcon.forecastIcons.count == 4 {
+                // create record
+                self.forecastIconDelegate?.passForecastedIcon(response: self.forecastIcon.forecastIcons)
+            }
         })
     }
     
@@ -80,9 +79,7 @@ class WeatherDataViewModel {
         networkIconManager.fetchWeatherDescriptionIcon(icon: self.weatherInfoData?.weather[0].icon ?? "", completionHandler: { response in
             if let weatherInfoData = self.weatherInfoData, let response = response {
                 self.databaseOperation.createRecord(response: weatherInfoData, iconResponse: response)
-                DispatchQueue.main.async {
-                    self.apiDelegate?.passInfoToView(locationName: locationName, response: response)
-                }
+                self.apiDelegate?.passInfoToView(locationName: locationName, response: response)
             }
         })
     }
